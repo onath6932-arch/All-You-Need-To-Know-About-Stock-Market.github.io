@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUANTUM CAPITAL | Advanced Financial Engineering & Value Investing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              bg: '#0B0F19',
+              card: 'rgba(17, 24, 39, 0.75)',
+              cyan: '#00F0FF',
+              purple: '#7000FF',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              rose: '#F43F5E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.12); }
+    .glow-purple { box-shadow: 0 0 25px rgba(112, 0, 255, 0.12); }
+    .glow-rose { box-shadow: 0 0 25px rgba(244, 63, 94, 0.12); }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-200 font-sans antialiased selection:bg-brand-cyan selection:text-black">
+
+  <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-3 h-3 rounded-full bg-brand-cyan animate-pulse"></div>
+        <span class="font-mono font-bold tracking-wider text-xl text-white">QUANTUM<span class="text-brand-cyan">CAPITAL</span></span>
+      </div>
+      <div class="hidden lg:flex space-x-6 font-mono text-xs">
+        <a href="#mod1" class="hover:text-brand-cyan transition">01. Allocator</a>
+        <a href="#mod2" class="hover:text-brand-cyan transition">02. Market Theories</a>
+        <a href="#mod3" class="hover:text-brand-cyan transition">03. Valuation Tools</a>
+        <a href="#mod4" class="hover:text-brand-cyan transition">04. Technicals</a>
+        <a href="#mod5" class="hover:text-brand-cyan transition">05. Psychology</a>
+        <a href="#mod6" class="hover:text-brand-cyan transition text-brand-rose">06. Corporate Failures</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="relative pt-32 pb-20 px-6 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/10 via-transparent to-transparent opacity-50"></div>
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <span class="font-mono text-xs text-brand-cyan uppercase tracking-widest px-3 py-1 rounded-full border border-brand-cyan/30 bg-brand-cyan/10">Unified Capital Markets Platform</span>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white mt-6 tracking-tight leading-tight">
+        Mastering Intrinsic Value, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-purple">Behavioral Risk</span> & Technical Mechanics
+      </h1>
+      <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">
+        An interactive laboratory synthesizing Benjamin Graham's value paradigms, modern market microstructure, quantitative valuation engines, and historical failure analysis.
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 space-y-24 pb-24">
+
+    <section id="mod1" class="space-y-6">
+      <div class="border-l-4 border-brand-cyan pl-4">
+        <span class="font-mono text-brand-cyan text-sm">MODULE 01</span>
+        <h2 class="text-2xl font-bold text-white">Capital Allocator & Asset Rebalancer</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass-panel p-6 rounded-xl space-y-4">
+          <h3 class="font-bold text-lg text-white">Graham's 50/50 Allocation Rule</h3>
+          <p class="text-sm text-slate-400">
+            Defensive investors should default to an equal allocation between high-grade bonds and equities. When markets become excessively overvalued, shift equity exposure down to 25%. When panic yields bargains, scale equity exposure up to 75%.
+          </p>
+          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-2 font-mono text-xs text-slate-300">
+            <p>▪ Current Equity Cap: <span class="text-brand-cyan">25% (Extreme Overvaluation)</span></p>
+            <p>▪ Baseline Split: <span class="text-brand-emerald">50% Stocks / 50% Bonds</span></p>
+            <p>▪ Max Equity Floor: <span class="text-brand-purple">75% (Extreme Panic Bargains)</span></p>
+          </div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
+          <h3 class="font-mono text-brand-cyan font-semibold text-lg">Dynamic Rebalancing Engine</h3>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <label class="block text-xs text-slate-400">Stock Value ($)</label>
+              <input type="number" id="rebStocks" value="70000" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400">Bond Value ($)</label>
+              <input type="number" id="rebBonds" value="30000" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400">Target Stock Allocation (%)</label>
+            <input type="number" id="rebTarget" value="50" min="25" max="75" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+          </div>
+          <button onclick="calculateRebalance()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Calculate Rebalance Orders</button>
+          <div id="rebalanceResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod2" class="space-y-6">
+      <div class="border-l-4 border-brand-purple pl-4">
+        <span class="font-mono text-brand-purple text-sm">MODULE 02</span>
+        <h2 class="text-2xl font-bold text-white">Market Theories & Efficient Market Hypothesis (EMH)</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-cyan">
+          <span class="font-mono text-xs text-brand-cyan">WEAK FORM EMH</span>
+          <h3 class="text-lg font-bold text-white">Past Price Neutrality</h3>
+          <p class="text-xs text-slate-400">Historical price trends, candlestick patterns, and moving averages cannot generate consistent alpha. Technical analysis is rendered obsolete.</p>
+        </div>
+        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-purple">
+          <span class="font-mono text-xs text-brand-purple">SEMI-STRONG FORM EMH</span>
+          <h3 class="text-lg font-bold text-white">Public Data Assimilation</h3>
+          <p class="text-xs text-slate-400">All public information (earnings, balance sheets, news) is priced in instantly. Fundamental analysis cannot beat low-cost indexing.</p>
+        </div>
+        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-emerald">
+          <span class="font-mono text-xs text-brand-emerald">STRONG FORM EMH</span>
+          <h3 class="text-lg font-bold text-white">Total Market Reflection</h3>
+          <p class="text-xs text-slate-400">Prices reflect all public and private/insider information seamlessly. No participant can beat market averages systematically over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod3" class="space-y-8">
+      <div class="border-l-4 border-brand-emerald pl-4">
+        <span class="font-mono text-brand-emerald text-sm">MODULE 03 & DATASETS</span>
+        <h2 class="text-2xl font-bold text-white">Valuation Engines & Historical Benchmarks</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass-panel p-6 rounded-xl space-y-4">
+          <h3 class="text-lg font-semibold text-white">Century Market Data (1871–1970)</h3>
+          <p class="text-xs text-slate-400">Historical P/E ratios vs Dividend Yields across a century of market cycles.</p>
+          <div class="h-60 relative">
+            <canvas id="datasetAChart"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-xl space-y-4">
+          <h3 class="text-lg font-semibold text-white">Glamour vs. Value Case Study (1969)</h3>
+          <p class="text-xs text-slate-400">Comparison of speculative valuation (H&R Block) vs bargain asset backing (Blue Bell).</p>
+          <div class="h-60 relative">
+            <canvas id="datasetBChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass-panel p-6 rounded-xl space-y-4 glow-purple">
+          <h3 class="text-lg font-semibold text-white font-mono">Graham Defensive Screener</h3>
+          <div class="space-y-3 text-sm">
+            <div>
+              <label class="block text-xs text-slate-400">Annual Revenue ($M)</label>
+              <input type="number" id="scSales" value="150" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-slate-400">Current Assets ($M)</label>
+                <input type="number" id="scAssets" value="200" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400">Current Liabilities ($M)</label>
+                <input type="number" id="scLiab" value="80" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400">Earnings Deficits in Last 10 Years?</label>
+              <select id="scDeficit" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+                <option value="no">No Deficits (Stable Earnings)</option>
+                <option value="yes">Deficit Present</option>
+              </select>
+            </div>
+            <button onclick="runGrahamScreener()" class="w-full py-2 bg-brand-purple hover:bg-brand-purple/80 text-white font-mono font-bold rounded transition">Run Defensive Audit</button>
+          </div>
+          <div id="screenerResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
+          <h3 class="text-lg font-semibold text-white font-mono">Two-Stage DCF Valuation Engine</h3>
+          <div class="space-y-3 text-sm">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-slate-400">Free Cash Flow ($M)</label>
+                <input type="number" id="dcfFCF" value="100" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400">Growth Rate Y1-5 (%)</label>
+                <input type="number" id="dcfGrowth" value="8" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-slate-400">Discount Rate / WACC (%)</label>
+                <input type="number" id="dcfDiscount" value="10" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400">Terminal Growth Rate (%)</label>
+                <input type="number" id="dcfTerminal" value="2.5" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+            </div>
+            <button onclick="calcDCF()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Compute Enterprise Intrinsic Value</button>
+          </div>
+          <div id="dcfResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod4" class="space-y-6">
+      <div class="border-l-4 border-brand-cyan pl-4">
+        <span class="font-mono text-brand-cyan text-sm">MODULE 04</span>
+        <h2 class="text-2xl font-bold text-white">Technical Trends & Momentum Dynamics</h2>
+      </div>
+
+      <div class="glass-panel p-6 rounded-xl space-y-4">
+        <div class="flex flex-col md:flex-row justify-between md:items-center">
+          <div>
+            <h3 class="text-lg font-semibold text-white">Golden Cross Signal Analysis</h3>
+            <p class="text-xs text-slate-400">Tracking 50-day moving average breaking above 200-day trend line.</p>
+          </div>
+          <span class="font-mono text-xs text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/30 px-3 py-1 rounded-full mt-2 md:mt-0 w-max">Bullish Signal Active</span>
+        </div>
+        <div class="h-64 relative">
+          <canvas id="technicalChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod5" class="space-y-8">
+      <div class="border-l-4 border-brand-purple pl-4">
+        <span class="font-mono text-brand-purple text-sm">MODULE 05</span>
+        <h2 class="text-2xl font-bold text-white">Behavioral Finance & Margin of Safety</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
+          <h3 class="text-lg font-semibold text-white font-mono">Graham Margin of Safety Calculator</h3>
+          <div class="space-y-3 text-sm">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-slate-400">EPS ($)</label>
+                <input type="number" id="mosEPS" value="4.50" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400">Est. Growth Rate (%)</label>
+                <input type="number" id="mosGrowth" value="5" step="0.5" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400">Current Market Price ($)</label>
+              <input type="number" id="mosPrice" value="52.00" step="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
+            </div>
+            <button onclick="calcMarginOfSafety()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Calculate Margin of Safety</button>
+          </div>
+          <div id="mosResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-xl space-y-4 glow-purple">
+          <h3 class="text-lg font-semibold text-white font-mono">Mr. Market Behavioral Simulator</h3>
+          <p class="text-xs text-slate-400">Simulate market quotes vs an enterprise with $100.00 intrinsic value.</p>
+          <div class="space-y-4">
+            <button onclick="simMrMarket()" class="w-full py-3 bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-mono font-bold rounded-lg hover:opacity-90 transition">Request New Market Quote</button>
+            <div id="mrMarketDisplay" class="p-4 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono text-slate-300">Click to fetch today's quote...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod6" class="space-y-6">
+      <div class="border-l-4 border-brand-rose pl-4">
+        <span class="font-mono text-brand-rose text-sm">MODULE 06</span>
+        <h2 class="text-2xl font-bold text-white">Cautionary Historical Case Studies</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass-panel p-6 rounded-xl space-y-3 glow-rose">
+          <span class="font-mono text-xs text-brand-rose px-2 py-1 rounded bg-brand-rose/10 border border-brand-rose/30">DEBT & ACCOUNTING FAILURE</span>
+          <h3 class="text-xl font-bold text-white">Penn Central Transportation Co. (1970)</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Penn Central was formed by merging major rail lines. Despite reporting record paper profits, the company masked operational losses through aggressive accounting tricks (e.g., capitalizing real estate revaluations as income) while accumulating vast short-term debt.
+          </p>
+          <div class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono space-y-1 text-slate-400">
+            <p>▪ <strong class="text-white">The Flaw:</strong> Operational cash deficit masked by non-operating accounting gains.</p>
+            <p>▪ <strong class="text-white">Outcome:</strong> Largest American bankruptcy filing in 1970 ($2.6B debt default).</p>
+            <p>▪ <strong class="text-white">Graham Lesson:</strong> Always verify operating cash flows relative to short-term obligations.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-xl space-y-3 glow-rose">
+          <span class="font-mono text-xs text-brand-rose px-2 py-1 rounded bg-brand-rose/10 border border-brand-rose/30">EXCESSIVE LEVERAGE & JUNK BONDS</span>
+          <h3 class="text-xl font-bold text-white">NVF Corp. Takeover of Sharon Steel (1969)</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            NVF Corporation, a tiny entity, acquired Sharon Steel—a business seven times its size—by issuing huge volumes of high-yield sub-investment-grade debentures ("junk bonds") and subordinated debt.
+          </p>
+          <div class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono space-y-1 text-slate-400">
+            <p>▪ <strong class="text-white">The Flaw:</strong> Interest charges consumed all operational earnings, leaving no safety margin.</p>
+            <p>▪ <strong class="text-white">Outcome:</strong> Severe financial distress under economic slowdowns.</p>
+            <p>▪ <strong class="text-white">Graham Lesson:</strong> High debt loads eliminate the Margin of Safety regardless of enterprise size.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    Chart.defaults.color = '#94A3B8';
+    Chart.defaults.font.family = 'JetBrains Mono';
+
+    // Chart 1: Dataset A
+    new Chart(document.getElementById('datasetAChart'), {
+      type: 'line',
+      data: {
+        labels: ['1911-1920', '1931-1940', '1961-1970'],
+        datasets: [
+          { label: 'Avg P/E Ratio', data: [10.0, 17.0, 17.1], borderColor: '#00F0FF', backgroundColor: 'rgba(0,240,255,0.1)', fill: true, tension: 0.3 },
+          { label: 'Avg Yield (%)', data: [5.8, 5.1, 3.2], borderColor: '#7000FF', borderDash: [5, 5], fill: false, tension: 0.3 }
+        ]
+      },
+      options: { responsive: true, maintainAspectRat
