@@ -1,340 +1,342 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUANTUM CAPITAL | Advanced Financial Engineering & Value Investing</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            brand: {
-              bg: '#0B0F19',
-              card: 'rgba(17, 24, 39, 0.75)',
-              cyan: '#00F0FF',
-              purple: '#7000FF',
-              emerald: '#10B981',
-              amber: '#F59E0B',
-              rose: '#F43F5E'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>The Intelligent Investor — Complete 20-Chapter Knowledge Hub</title>
   <style>
-    .glass-panel {
-      background: rgba(17, 24, 39, 0.75);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    :root {
+      --bg-paper: #f7f4ed;
+      --bg-card: #ffffff;
+      --text-main: #2b2825;
+      --text-muted: #6e675f;
+      --border-color: #e2dacd;
+      --accent-burgundy: #6b1d2f;
+      --accent-gold: #c29b38;
+      --sidebar-width: 320px;
+      --font-serif: "Georgia", "Garamond", serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.12); }
-    .glow-purple { box-shadow: 0 0 25px rgba(112, 0, 255, 0.12); }
-    .glow-rose { box-shadow: 0 0 25px rgba(244, 63, 94, 0.12); }
+
+    [data-theme="sepia"] {
+      --bg-paper: #efe3d3;
+      --bg-card: #f8f1e5;
+      --text-main: #382d21;
+      --text-muted: #736250;
+      --border-color: #d1c2a5;
+      --accent-burgundy: #591b20;
+    }
+
+    [data-theme="dark"] {
+      --bg-paper: #1a1816;
+      --bg-card: #24211e;
+      --text-main: #e6e0d8;
+      --text-muted: #9e9589;
+      --border-color: #3b3631;
+      --accent-burgundy: #d97b84;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-paper);
+      color: var(--text-main);
+      font-family: var(--font-serif);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #progress-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 100;
+    }
+    #progress-bar { height: 100%; background: var(--accent-burgundy); width: 0%; }
+
+    aside {
+      width: var(--sidebar-width);
+      background-color: var(--bg-card);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .sidebar-header { padding: 20px; border-bottom: 2px solid var(--border-color); }
+    .sidebar-header h1 { font-size: 1.1rem; color: var(--accent-burgundy); text-transform: uppercase; letter-spacing: 0.05em; }
+    .sidebar-header .author { font-size: 0.8rem; font-family: var(--font-sans); color: var(--text-muted); font-style: italic; }
+
+    .search-box { padding: 12px 20px; border-bottom: 1px solid var(--border-color); }
+    .search-box input {
+      width: 100%; padding: 8px 12px; border: 1px solid var(--border-color);
+      border-radius: 4px; background: var(--bg-paper); color: var(--text-main); font-family: var(--font-sans); font-size: 0.85rem;
+    }
+
+    .toc-container { flex: 1; overflow-y: auto; padding: 8px 0; }
+    .toc-title { padding: 8px 20px; font-size: 0.7rem; font-family: var(--font-sans); text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+    .toc-item {
+      padding: 8px 20px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
+      border-left: 3px solid transparent; color: inherit; text-decoration: none;
+    }
+    .toc-item:hover { background-color: var(--bg-paper); }
+    .toc-item.active { border-left-color: var(--accent-burgundy); background-color: var(--bg-paper); font-weight: bold; color: var(--accent-burgundy); }
+
+    .sidebar-footer { padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.8rem; }
+    .theme-toggle select { background: var(--bg-paper); color: var(--text-main); border: 1px solid var(--border-color); padding: 4px; border-radius: 4px; }
+
+    main { flex: 1; overflow-y: auto; position: relative; }
+    .content-wrapper { max-width: 850px; margin: 0 auto; padding: 40px; background-color: var(--bg-card); min-height: 100vh; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); }
+
+    .section-tag { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-burgundy); font-weight: 600; margin-bottom: 6px; }
+    h1.doc-title { font-size: 2rem; line-height: 1.2; margin-bottom: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; font-weight: normal; }
+    .doc-subtitle { font-size: 1rem; color: var(--text-muted); font-style: italic; margin-bottom: 24px; }
+
+    .chapter-block { margin-bottom: 40px; line-height: 1.7; font-size: 1rem; }
+    .chapter-block p { margin-bottom: 16px; text-align: justify; }
+    .chapter-block h2 { font-size: 1.3rem; margin: 28px 0 12px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; color: var(--accent-burgundy); font-weight: normal; }
+    
+    ul, ol { margin: 0 0 20px 24px; font-family: var(--font-sans); font-size: 0.95rem; }
+    li { margin-bottom: 8px; }
+
+    blockquote { margin: 20px 0; padding: 14px 20px; border-left: 3px solid var(--accent-burgundy); background-color: var(--bg-paper); font-style: italic; }
+    
+    .formula-box { background: var(--bg-paper); border: 1px solid var(--border-color); padding: 16px; font-family: var(--font-sans); margin: 20px 0; border-radius: 4px; }
+    .formula-title { font-weight: bold; color: var(--accent-burgundy); margin-bottom: 8px; text-transform: uppercase; font-size: 0.85rem; }
+
+    @media (max-width: 900px) {
+      aside { position: absolute; height: 100%; transform: translateX(-100%); transition: transform 0.3s; }
+      aside.open { transform: translateX(0); }
+      .mobile-toggle { display: block !important; }
+    }
+    .mobile-toggle { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--accent-burgundy); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; z-index: 100; cursor: pointer; }
   </style>
 </head>
-<body class="bg-[#0B0F19] text-slate-200 font-sans antialiased selection:bg-brand-cyan selection:text-black">
+<body>
 
-  <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-3 h-3 rounded-full bg-brand-cyan animate-pulse"></div>
-        <span class="font-mono font-bold tracking-wider text-xl text-white">QUANTUM<span class="text-brand-cyan">CAPITAL</span></span>
-      </div>
-      <div class="hidden lg:flex space-x-6 font-mono text-xs">
-        <a href="#mod1" class="hover:text-brand-cyan transition">01. Allocator</a>
-        <a href="#mod2" class="hover:text-brand-cyan transition">02. Market Theories</a>
-        <a href="#mod3" class="hover:text-brand-cyan transition">03. Valuation Tools</a>
-        <a href="#mod4" class="hover:text-brand-cyan transition">04. Technicals</a>
-        <a href="#mod5" class="hover:text-brand-cyan transition">05. Psychology</a>
-        <a href="#mod6" class="hover:text-brand-cyan transition text-brand-rose">06. Corporate Failures</a>
+  <div id="progress-container"><div id="progress-bar"></div></div>
+
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h1>The Intelligent Investor</h1>
+      <div class="author">Benjamin Graham & Jason Zweig</div>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search chapters & concepts..." onkeyup="filterChapters()">
+    </div>
+
+    <div class="toc-container" id="tocContainer">
+      <div class="toc-title">Front Matter</div>
+      <a class="toc-item active" onclick="showChapter('preface')">Preface & Introduction</a>
+      <div class="toc-title">Part I: Core Strategy</div>
+      <a class="toc-item" onclick="showChapter('ch1')">Ch 1: Investment vs Speculation</a>
+      <a class="toc-item" onclick="showChapter('ch2')">Ch 2: Inflation & Asset Classes</a>
+      <a class="toc-item" onclick="showChapter('ch3')">Ch 3: Century of Stock Market History</a>
+      <a class="toc-item" onclick="showChapter('ch4')">Ch 4: Asset Allocation Strategy</a>
+      <a class="toc-item" onclick="showChapter('ch5')">Ch 5: The Defensive Investor & Common Stocks</a>
+      <a class="toc-item" onclick="showChapter('ch6')">Ch 6: The Enterprising Investor Strategy</a>
+      <a class="toc-item" onclick="showChapter('ch7')">Ch 7: Second-Discipline Stock Selection</a>
+      <div class="toc-title">Part II: Market Behavior & Advice</div>
+      <a class="toc-item" onclick="showChapter('ch8')">Ch 8: Market Fluctuations & Mr. Market</a>
+      <a class="toc-item" onclick="showChapter('ch9')">Ch 9: Investing in Investment Funds</a>
+      <a class="toc-item" onclick="showChapter('ch10')">Ch 10: Advisors & Money Managers</a>
+      <div class="toc-title">Part III: Analysis & Stock Selection</div>
+      <a class="toc-item" onclick="showChapter('ch11')">Ch 11: Security Analysis for Laymen</a>
+      <a class="toc-item" onclick="showChapter('ch12')">Ch 12: Per-Share Earnings Analysis</a>
+      <a class="toc-item" onclick="showChapter('ch13')">Ch 13: Comparing Four Listed Companies</a>
+      <a class="toc-item" onclick="showChapter('ch14')">Ch 14: Stock Selection for Defensive Investors</a>
+      <a class="toc-item" onclick="showChapter('ch15')">Ch 15: Stock Selection for Enterprising Investors</a>
+      <div class="toc-title">Part IV: Special Situations & Margin of Safety</div>
+      <a class="toc-item" onclick="showChapter('ch16')">Ch 16: Convertible Issues & Warrants</a>
+      <a class="toc-item" onclick="showChapter('ch17')">Ch 17: Four Extremely Instructive Case Histories</a>
+      <a class="toc-item" onclick="showChapter('ch18')">Ch 18: Comparison of Eight Pairs of Companies</a>
+      <a class="toc-item" onclick="showChapter('ch19')">Ch 19: Stockholders & Management Policy</a>
+      <a class="toc-item" onclick="showChapter('ch20')">Ch 20: Margin of Safety (Central Concept)</a>
+    </div>
+
+    <div class="sidebar-footer">
+      <span>Framework Edition</span>
+      <div class="theme-toggle">
+        <select onchange="changeTheme(this.value)">
+          <option value="paper">Paper</option>
+          <option value="sepia">Sepia</option>
+          <option value="dark">Dark</option>
+        </select>
       </div>
     </div>
-  </nav>
+  </aside>
 
-  <header class="relative pt-32 pb-20 px-6 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/10 via-transparent to-transparent opacity-50"></div>
-    <div class="max-w-5xl mx-auto text-center relative z-10">
-      <span class="font-mono text-xs text-brand-cyan uppercase tracking-widest px-3 py-1 rounded-full border border-brand-cyan/30 bg-brand-cyan/10">Unified Capital Markets Platform</span>
-      <h1 class="text-4xl md:text-6xl font-extrabold text-white mt-6 tracking-tight leading-tight">
-        Mastering Intrinsic Value, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-purple">Behavioral Risk</span> & Technical Mechanics
-      </h1>
-      <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">
-        An interactive laboratory synthesizing Benjamin Graham's value paradigms, modern market microstructure, quantitative valuation engines, and historical failure analysis.
-      </p>
-    </div>
-  </header>
+  <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
 
-  <main class="max-w-7xl mx-auto px-6 space-y-24 pb-24">
+  <main id="main-content">
+    <div class="content-wrapper">
 
-    <section id="mod1" class="space-y-6">
-      <div class="border-l-4 border-brand-cyan pl-4">
-        <span class="font-mono text-brand-cyan text-sm">MODULE 01</span>
-        <h2 class="text-2xl font-bold text-white">Capital Allocator & Asset Rebalancer</h2>
-      </div>
+      <section id="preface" class="chapter-block">
+        <div class="section-tag">Front Matter</div>
+        <h1 class="doc-title">Preface & Introduction</h1>
+        <div class="doc-subtitle">Framework for Rational Decision Making</div>
+        <p>Investing does not require superior intelligence, insider knowledge, or complex math. It requires a sound intellectual framework to make decisions and emotional discipline to keep feelings from ruining that framework.</p>
+        <blockquote>"To invest successfully over a lifetime does not require a stratospheric IQ... What's needed is a sound intellectual framework." — Warren E. Buffett</blockquote>
+        <h2>Two Key Lessons</h2>
+        <ul>
+          <li><strong>Growth ≠ Profit:</strong> High corporate growth prospects rarely translate into automatic investor returns due to overpaying for hype.</li>
+          <li><strong>Expert Fallibility:</strong> Wall Street professionals do not have reliable ways to consistently predict market trends or stock performance.</li>
+        </ul>
+      </section>
 
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="glass-panel p-6 rounded-xl space-y-4">
-          <h3 class="font-bold text-lg text-white">Graham's 50/50 Allocation Rule</h3>
-          <p class="text-sm text-slate-400">
-            Defensive investors should default to an equal allocation between high-grade bonds and equities. When markets become excessively overvalued, shift equity exposure down to 25%. When panic yields bargains, scale equity exposure up to 75%.
-          </p>
-          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-2 font-mono text-xs text-slate-300">
-            <p>▪ Current Equity Cap: <span class="text-brand-cyan">25% (Extreme Overvaluation)</span></p>
-            <p>▪ Baseline Split: <span class="text-brand-emerald">50% Stocks / 50% Bonds</span></p>
-            <p>▪ Max Equity Floor: <span class="text-brand-purple">75% (Extreme Panic Bargains)</span></p>
-          </div>
+      <section id="ch1" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 1</div>
+        <h1 class="doc-title">Investment vs. Speculation</h1>
+        <p>Graham defines an investment operation rigorously:</p>
+        <div class="formula-box">
+          <div class="formula-title">Graham's Investment Triad</div>
+          1. Thorough financial analysis of business fundamentals.<br>
+          2. Safety of principal protection against severe losses.<br>
+          3. Adequate return expectation (rather than getting rich quick).
         </div>
+        <p>Operations failing any of these three requirements are speculative. Unintelligent speculation occurs when speculating under the illusion that you are investing.</p>
+      </section>
 
-        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
-          <h3 class="font-mono text-brand-cyan font-semibold text-lg">Dynamic Rebalancing Engine</h3>
-          <div class="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <label class="block text-xs text-slate-400">Stock Value ($)</label>
-              <input type="number" id="rebStocks" value="70000" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400">Bond Value ($)</label>
-              <input type="number" id="rebBonds" value="30000" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs text-slate-400">Target Stock Allocation (%)</label>
-            <input type="number" id="rebTarget" value="50" min="25" max="75" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-          </div>
-          <button onclick="calculateRebalance()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Calculate Rebalance Orders</button>
-          <div id="rebalanceResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
+      <section id="ch2" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 2</div>
+        <h1 class="doc-title">Inflation & Asset Classes</h1>
+        <p>Equities are not a perfect hedge against inflation, but they offer far better long-term purchasing power protection than fixed-income assets (bonds and cash).</p>
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Inflation erodes fixed yields over time.</li>
+          <li>Corporate earnings do not automatically scale upward during high inflation due to rising capital costs.</li>
+          <li>REITs and TIPS (Treasury Inflation-Protected Securities) provide supplemental safety.</li>
+        </ul>
+      </section>
+
+      <section id="ch3" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 3</div>
+        <h1 class="doc-title">A Century of Stock Market History</h1>
+        <p>Historical market cycles show that extreme bull markets always end in corrections. Investors must study market history to avoid projecting recent price gains indefinitely into the future.</p>
+      </section>
+
+      <section id="ch4" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 4</div>
+        <h1 class="doc-title">Asset Allocation Strategy</h1>
+        <p>Graham proposes a rules-based allocation for defensive investors to keep emotion out of market timing:</p>
+        <div class="formula-box">
+          <div class="formula-title">The 25/75 Allocation Rule</div>
+          • Maintain a baseline split of <strong>50% Common Stocks / 50% High-Grade Bonds</strong>.<br>
+          • Shift up to <strong>75% stocks</strong> when markets are abnormally cheap.<br>
+          • Drop down to <strong>25% stocks</strong> when markets reach extreme valuation highs.
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="mod2" class="space-y-6">
-      <div class="border-l-4 border-brand-purple pl-4">
-        <span class="font-mono text-brand-purple text-sm">MODULE 02</span>
-        <h2 class="text-2xl font-bold text-white">Market Theories & Efficient Market Hypothesis (EMH)</h2>
-      </div>
+      <section id="ch5" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 5</div>
+        <h1 class="doc-title">The Defensive Investor & Common Stocks</h1>
+        <p>Defensive investors prioritize safety and freedom from stress over market-beating returns. They achieve this via broad diversification across leading, financially sound companies or index funds.</p>
+      </section>
 
-      <div class="grid lg:grid-cols-3 gap-6">
-        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-cyan">
-          <span class="font-mono text-xs text-brand-cyan">WEAK FORM EMH</span>
-          <h3 class="text-lg font-bold text-white">Past Price Neutrality</h3>
-          <p class="text-xs text-slate-400">Historical price trends, candlestick patterns, and moving averages cannot generate consistent alpha. Technical analysis is rendered obsolete.</p>
+      <section id="ch6" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 6</div>
+        <h1 class="doc-title">The Enterprising Investor Strategy: Negative Approach</h1>
+        <p>Enterprising (active) investors should start by avoiding high-risk, low-probability plays:</p>
+        <ul>
+          <li>Avoid junk bonds and high-yield preferred stocks without sufficient coverage.</li>
+          <li>Avoid foreign bonds unless priced at severe panic discounts.</li>
+          <li>Avoid IPOs (Initial Public Offerings), which are built to favor sellers over buyers.</li>
+        </ul>
+      </section>
+
+      <section id="ch7" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 7</div>
+        <h1 class="doc-title">Second-Discipline Stock Selection</h1>
+        <p>To achieve superior results, the active investor should focus on:</p>
+        <ul>
+          <li><strong>Buying in depressed markets:</strong> Capitalizing on overall panic.</li>
+          <li><strong>Bargain Issues (Net-Nets):</strong> Buying stocks selling below their Net Current Asset Value (NCAV).</li>
+          <li><strong>Special Situations:</strong> Arbitrage, liquidations, and corporate reorganizations.</li>
+        </ul>
+      </section>
+
+      <section id="ch8" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 8</div>
+        <h1 class="doc-title">Market Fluctuations & "Mr. Market"</h1>
+        <p>Graham introduces his famous allegory: Imagine buying a share of a business where your partner is an emotional character named <strong>Mr. Market</strong>.</p>
+        <blockquote>"Mr. Market is your servant, not your guide. He offers prices every day based on his mood swings—ranging from wild euphoria to deep depression. You are free to ignore him or exploit his folly."</blockquote>
+        <p>Do not mistake market noise for business value updates.</p>
+      </section>
+
+      <section id="ch9" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 9</div>
+        <h1 class="doc-title">Investing in Investment Funds</h1>
+        <p>Most active mutual funds fail to beat market indexes over long horizons due to high management fees, trading costs, and cash drag. Indexing is recommended for most individual investors.</p>
+      </section>
+
+      <section id="ch10" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 10</div>
+        <h1 class="doc-title">Advisors & Money Managers</h1>
+        <p>Be cautious with financial advisers. Seek independent advisers who focus on capital preservation rather than those selling commission-based financial products.</p>
+      </section>
+
+      <section id="ch11" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 11</div>
+        <h1 class="doc-title">Security Analysis for Laymen</h1>
+        <p>Focus analysis on bond coverage, earnings stability, balance sheet strength, dividend track records, and realistic growth forecasts.</p>
+      </section>
+
+      <section id="ch12" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 12</div>
+        <h1 class="doc-title">Per-Share Earnings Analysis</h1>
+        <p>Don't take single-year Earnings Per Share (EPS) at face value. Look at 7-to-10-year average earnings to account for accounting tricks, dilution, and economic cycles.</p>
+      </section>
+
+      <section id="ch13" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 13</div>
+        <h1 class="doc-title">Comparing Four Listed Companies</h1>
+        <p>Graham works through direct comparisons of balance sheets and income statements, proving that popular growth stocks are often priced for perfection, creating asymmetric downside risk.</p>
+      </section>
+
+      <section id="ch14" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 14</div>
+        <h1 class="doc-title">Stock Selection for Defensive Investors</h1>
+        <div class="formula-box">
+          <div class="formula-title">7 Defensive Selection Rules</div>
+          1. <strong>Adequate Size:</strong> Minimum revenue threshold to rule out small, fragile firms.<br>
+          2. <strong>Strong Finances:</strong> Current assets at least 2x current liabilities; debt < Net Current Assets.<br>
+          3. <strong>Earnings Stability:</strong> Positive earnings in each of the past 10 years.<br>
+          4. <strong>Dividend Record:</strong> Uninterrupted dividends for at least 20 years.<br>
+          5. <strong>Earnings Growth:</strong> Min 33% growth in EPS over the past decade.<br>
+          6. <strong>Moderate P/E Ratio:</strong> Price no more than 15x average 3-year earnings.<br>
+          7. <strong>Moderate P/B Ratio:</strong> Price to Book < 1.5 (or P/E x P/B < 22.5).
         </div>
-        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-purple">
-          <span class="font-mono text-xs text-brand-purple">SEMI-STRONG FORM EMH</span>
-          <h3 class="text-lg font-bold text-white">Public Data Assimilation</h3>
-          <p class="text-xs text-slate-400">All public information (earnings, balance sheets, news) is priced in instantly. Fundamental analysis cannot beat low-cost indexing.</p>
-        </div>
-        <div class="glass-panel p-6 rounded-xl space-y-3 border-t-2 border-brand-emerald">
-          <span class="font-mono text-xs text-brand-emerald">STRONG FORM EMH</span>
-          <h3 class="text-lg font-bold text-white">Total Market Reflection</h3>
-          <p class="text-xs text-slate-400">Prices reflect all public and private/insider information seamlessly. No participant can beat market averages systematically over time.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="mod3" class="space-y-8">
-      <div class="border-l-4 border-brand-emerald pl-4">
-        <span class="font-mono text-brand-emerald text-sm">MODULE 03 & DATASETS</span>
-        <h2 class="text-2xl font-bold text-white">Valuation Engines & Historical Benchmarks</h2>
-      </div>
+      <section id="ch15" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 15</div>
+        <h1 class="doc-title">Stock Selection for Enterprising Investors</h1>
+        <p>Enterprising investors seek larger returns by applying looser financial size rules while insisting on lower valuation metrics (e.g., buying below 120% of net tangible assets or using Net Current Asset Value formulas).</p>
+      </section>
 
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="glass-panel p-6 rounded-xl space-y-4">
-          <h3 class="text-lg font-semibold text-white">Century Market Data (1871–1970)</h3>
-          <p class="text-xs text-slate-400">Historical P/E ratios vs Dividend Yields across a century of market cycles.</p>
-          <div class="h-60 relative">
-            <canvas id="datasetAChart"></canvas>
-          </div>
-        </div>
+      <section id="ch16" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 16</div>
+        <h1 class="doc-title">Convertible Issues & Warrants</h1>
+        <p>Convertible bonds and warrants often promise the benefits of both stocks and bonds, but in practice, they are often structured to favor issuers rather than buyers.</p>
+      </section>
 
-        <div class="glass-panel p-6 rounded-xl space-y-4">
-          <h3 class="text-lg font-semibold text-white">Glamour vs. Value Case Study (1969)</h3>
-          <p class="text-xs text-slate-400">Comparison of speculative valuation (H&R Block) vs bargain asset backing (Blue Bell).</p>
-          <div class="h-60 relative">
-            <canvas id="datasetBChart"></canvas>
-          </div>
-        </div>
-      </div>
+      <section id="ch17" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 17</div>
+        <h1 class="doc-title">Four Instructive Case Histories</h1>
+        <p>Case studies showing how financial engineering, excessive leverage, and speculative market manias destroy long-term investor capital.</p>
+      </section>
 
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="glass-panel p-6 rounded-xl space-y-4 glow-purple">
-          <h3 class="text-lg font-semibold text-white font-mono">Graham Defensive Screener</h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <label class="block text-xs text-slate-400">Annual Revenue ($M)</label>
-              <input type="number" id="scSales" value="150" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-xs text-slate-400">Current Assets ($M)</label>
-                <input type="number" id="scAssets" value="200" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-              <div>
-                <label class="block text-xs text-slate-400">Current Liabilities ($M)</label>
-                <input type="number" id="scLiab" value="80" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400">Earnings Deficits in Last 10 Years?</label>
-              <select id="scDeficit" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-                <option value="no">No Deficits (Stable Earnings)</option>
-                <option value="yes">Deficit Present</option>
-              </select>
-            </div>
-            <button onclick="runGrahamScreener()" class="w-full py-2 bg-brand-purple hover:bg-brand-purple/80 text-white font-mono font-bold rounded transition">Run Defensive Audit</button>
-          </div>
-          <div id="screenerResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
-        </div>
+      <section id="ch18" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 18</div>
+        <h1 class="doc-title">Comparison of Eight Pairs of Companies</h1>
+        <p>Side-by-side comparison illustrating how market prices regularly misvalue companies with identical underlying fundamental earnings power.</p>
+      </section>
 
-        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
-          <h3 class="text-lg font-semibold text-white font-mono">Two-Stage DCF Valuation Engine</h3>
-          <div class="space-y-3 text-sm">
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-xs text-slate-400">Free Cash Flow ($M)</label>
-                <input type="number" id="dcfFCF" value="100" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-              <div>
-                <label class="block text-xs text-slate-400">Growth Rate Y1-5 (%)</label>
-                <input type="number" id="dcfGrowth" value="8" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-xs text-slate-400">Discount Rate / WACC (%)</label>
-                <input type="number" id="dcfDiscount" value="10" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-              <div>
-                <label class="block text-xs text-slate-400">Terminal Growth Rate (%)</label>
-                <input type="number" id="dcfTerminal" value="2.5" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-            </div>
-            <button onclick="calcDCF()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Compute Enterprise Intrinsic Value</button>
-          </div>
-          <div id="dcfResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
-        </div>
-      </div>
-    </section>
+      <section id="ch19" class="chapter-block" style="display:none;">
+        <div class="section-tag">Chapter 19</div>
+        <h1 class="doc-title">Stockholders & Management Policy</h1>
+        <p>Shareholders are owners. They should actively vote against ineffective management teams, demand rational dividend policies, and ensure capital isn't wasted on poor acquisitions.</p>
+      </section>
 
-    <section id="mod4" class="space-y-6">
-      <div class="border-l-4 border-brand-cyan pl-4">
-        <span class="font-mono text-brand-cyan text-sm">MODULE 04</span>
-        <h2 class="text-2xl font-bold text-white">Technical Trends & Momentum Dynamics</h2>
-      </div>
-
-      <div class="glass-panel p-6 rounded-xl space-y-4">
-        <div class="flex flex-col md:flex-row justify-between md:items-center">
-          <div>
-            <h3 class="text-lg font-semibold text-white">Golden Cross Signal Analysis</h3>
-            <p class="text-xs text-slate-400">Tracking 50-day moving average breaking above 200-day trend line.</p>
-          </div>
-          <span class="font-mono text-xs text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/30 px-3 py-1 rounded-full mt-2 md:mt-0 w-max">Bullish Signal Active</span>
-        </div>
-        <div class="h-64 relative">
-          <canvas id="technicalChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <section id="mod5" class="space-y-8">
-      <div class="border-l-4 border-brand-purple pl-4">
-        <span class="font-mono text-brand-purple text-sm">MODULE 05</span>
-        <h2 class="text-2xl font-bold text-white">Behavioral Finance & Margin of Safety</h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="glass-panel p-6 rounded-xl space-y-4 glow-cyan">
-          <h3 class="text-lg font-semibold text-white font-mono">Graham Margin of Safety Calculator</h3>
-          <div class="space-y-3 text-sm">
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-xs text-slate-400">EPS ($)</label>
-                <input type="number" id="mosEPS" value="4.50" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-              <div>
-                <label class="block text-xs text-slate-400">Est. Growth Rate (%)</label>
-                <input type="number" id="mosGrowth" value="5" step="0.5" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400">Current Market Price ($)</label>
-              <input type="number" id="mosPrice" value="52.00" step="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white font-mono">
-            </div>
-            <button onclick="calcMarginOfSafety()" class="w-full py-2 bg-brand-cyan hover:bg-brand-cyan/80 text-slate-950 font-mono font-bold rounded transition">Calculate Margin of Safety</button>
-          </div>
-          <div id="mosResult" class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono"></div>
-        </div>
-
-        <div class="glass-panel p-6 rounded-xl space-y-4 glow-purple">
-          <h3 class="text-lg font-semibold text-white font-mono">Mr. Market Behavioral Simulator</h3>
-          <p class="text-xs text-slate-400">Simulate market quotes vs an enterprise with $100.00 intrinsic value.</p>
-          <div class="space-y-4">
-            <button onclick="simMrMarket()" class="w-full py-3 bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-mono font-bold rounded-lg hover:opacity-90 transition">Request New Market Quote</button>
-            <div id="mrMarketDisplay" class="p-4 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono text-slate-300">Click to fetch today's quote...</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="mod6" class="space-y-6">
-      <div class="border-l-4 border-brand-rose pl-4">
-        <span class="font-mono text-brand-rose text-sm">MODULE 06</span>
-        <h2 class="text-2xl font-bold text-white">Cautionary Historical Case Studies</h2>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="glass-panel p-6 rounded-xl space-y-3 glow-rose">
-          <span class="font-mono text-xs text-brand-rose px-2 py-1 rounded bg-brand-rose/10 border border-brand-rose/30">DEBT & ACCOUNTING FAILURE</span>
-          <h3 class="text-xl font-bold text-white">Penn Central Transportation Co. (1970)</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Penn Central was formed by merging major rail lines. Despite reporting record paper profits, the company masked operational losses through aggressive accounting tricks (e.g., capitalizing real estate revaluations as income) while accumulating vast short-term debt.
-          </p>
-          <div class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono space-y-1 text-slate-400">
-            <p>▪ <strong class="text-white">The Flaw:</strong> Operational cash deficit masked by non-operating accounting gains.</p>
-            <p>▪ <strong class="text-white">Outcome:</strong> Largest American bankruptcy filing in 1970 ($2.6B debt default).</p>
-            <p>▪ <strong class="text-white">Graham Lesson:</strong> Always verify operating cash flows relative to short-term obligations.</p>
-          </div>
-        </div>
-
-        <div class="glass-panel p-6 rounded-xl space-y-3 glow-rose">
-          <span class="font-mono text-xs text-brand-rose px-2 py-1 rounded bg-brand-rose/10 border border-brand-rose/30">EXCESSIVE LEVERAGE & JUNK BONDS</span>
-          <h3 class="text-xl font-bold text-white">NVF Corp. Takeover of Sharon Steel (1969)</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            NVF Corporation, a tiny entity, acquired Sharon Steel—a business seven times its size—by issuing huge volumes of high-yield sub-investment-grade debentures ("junk bonds") and subordinated debt.
-          </p>
-          <div class="p-3 bg-slate-900/80 rounded border border-slate-800 text-xs font-mono space-y-1 text-slate-400">
-            <p>▪ <strong class="text-white">The Flaw:</strong> Interest charges consumed all operational earnings, leaving no safety margin.</p>
-            <p>▪ <strong class="text-white">Outcome:</strong> Severe financial distress under economic slowdowns.</p>
-            <p>▪ <strong class="text-white">Graham Lesson:</strong> High debt loads eliminate the Margin of Safety regardless of enterprise size.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    Chart.defaults.color = '#94A3B8';
-    Chart.defaults.font.family = 'JetBrains Mono';
-
-    // Chart 1: Dataset A
-    new Chart(document.getElementById('datasetAChart'), {
-      type: 'line',
-      data: {
-        labels: ['1911-1920', '1931-1940', '1961-1970'],
-        datasets: [
-          { label: 'Avg P/E Ratio', data: [10.0, 17.0, 17.1], borderColor: '#00F0FF', backgroundColor: 'rgba(0,240,255,0.1)', fill: true, tension: 0.3 },
-          { label: 'Avg Yield (%)', data: [5.8, 5.1, 3.2], borderColor: '#7000FF', borderDash: [5, 5], fill: false, tension: 0.3 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRat
+      <section id="ch20" class="chapter-block" style="display:none
