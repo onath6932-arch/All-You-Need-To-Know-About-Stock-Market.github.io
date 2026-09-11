@@ -1,342 +1,855 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Intelligent Investor — Complete 20-Chapter Knowledge Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VANTA // Future Motion</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     :root {
-      --bg-paper: #f7f4ed;
-      --bg-card: #ffffff;
-      --text-main: #2b2825;
-      --text-muted: #6e675f;
-      --border-color: #e2dacd;
-      --accent-burgundy: #6b1d2f;
-      --accent-gold: #c29b38;
-      --sidebar-width: 320px;
-      --font-serif: "Georgia", "Garamond", serif;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --ink: #101010;
+      --paper: #f4f0e9;
+      --acid: #d9ff42;
+      --orange: #ff6b35;
+      --blue: #3d5afe;
+      --shoe: #d9ff42;
+      --shadow: rgba(16, 16, 16, 0.22);
     }
 
-    [data-theme="sepia"] {
-      --bg-paper: #efe3d3;
-      --bg-card: #f8f1e5;
-      --text-main: #382d21;
-      --text-muted: #736250;
-      --border-color: #d1c2a5;
-      --accent-burgundy: #591b20;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    [data-theme="dark"] {
-      --bg-paper: #1a1816;
-      --bg-card: #24211e;
-      --text-main: #e6e0d8;
-      --text-muted: #9e9589;
-      --border-color: #3b3631;
-      --accent-burgundy: #d97b84;
+    html {
+      scroll-behavior: smooth;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg-paper);
-      color: var(--text-main);
-      font-family: var(--font-serif);
+      min-width: 320px;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Manrope", sans-serif;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      content: "";
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(16, 16, 16, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 16, 16, 0.08) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .site-header {
       display: flex;
-      height: 100vh;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 5vw;
+      border-bottom: 1px solid rgba(16, 16, 16, 0.2);
+    }
+
+    .logo {
+      letter-spacing: -0.08em;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+    }
+
+    .logo span {
+      color: var(--orange);
+    }
+
+    .nav {
+      display: flex;
+      gap: 30px;
+      font-family: "DM Mono", monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .cart {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--acid);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .cart-count {
+      display: grid;
+      width: 20px;
+      height: 20px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: calc(100vh - 98px);
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: center;
+      gap: 2rem;
+      padding: 7vw 5vw 9vw;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .eyebrow {
+      margin-bottom: 24px;
+      color: var(--orange);
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 720px;
+      letter-spacing: -0.085em;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(4.5rem, 10vw, 11rem);
+      line-height: 0.84;
+      text-transform: uppercase;
+    }
+
+    h1 em {
+      color: var(--orange);
+      font-style: normal;
+    }
+
+    .hero-description {
+      max-width: 410px;
+      margin-top: 32px;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button {
+      padding: 16px 22px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-4px);
+      box-shadow: 6px 6px 0 var(--orange);
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .stage {
+      position: relative;
+      display: grid;
+      min-height: 560px;
+      place-items: center;
+      perspective: 1200px;
+    }
+
+    .stage::before {
+      position: absolute;
+      width: min(45vw, 590px);
+      height: min(45vw, 590px);
+      border-radius: 50%;
+      background: var(--blue);
+      content: "";
+      opacity: 0.95;
+    }
+
+    .stage::after {
+      position: absolute;
+      width: 80%;
+      height: 28px;
+      bottom: 15%;
+      border-radius: 50%;
+      background: var(--shadow);
+      content: "";
+      filter: blur(18px);
+      transform: rotate(-10deg);
+    }
+
+    .shoe-wrap {
+      position: relative;
+      z-index: 1;
+      width: min(43vw, 570px);
+      aspect-ratio: 1.6;
+      transform-style: preserve-3d;
+      animation: hover 4s ease-in-out infinite;
+      transition: transform 180ms ease-out;
+    }
+
+    .shoe {
+      position: absolute;
+      inset: 18% 4% 25%;
+      border: 8px solid var(--ink);
+      border-radius: 48% 50% 22% 18% / 45% 54% 28% 24%;
+      background: var(--shoe);
+      box-shadow:
+        inset -30px -28px 0 rgba(0, 0, 0, 0.08),
+        20px 25px 0 var(--ink);
+      transform: rotate(-13deg) skewY(-4deg);
+    }
+
+    .shoe::before {
+      position: absolute;
+      top: -26%;
+      right: 15%;
+      width: 53%;
+      height: 68%;
+      border: 8px solid var(--ink);
+      border-bottom: 0;
+      border-radius: 54% 48% 0 0;
+      background: var(--shoe);
+      content: "";
+      transform: skewX(16deg) rotate(3deg);
+    }
+
+    .shoe::after {
+      position: absolute;
+      right: -8%;
+      bottom: -13%;
+      left: -4%;
+      height: 27%;
+      border: 8px solid var(--ink);
+      border-radius: 20% 18% 48% 35%;
+      background: #f7f3ed;
+      content: "";
+      transform: rotate(-1deg);
+    }
+
+    .laces {
+      position: absolute;
+      z-index: 2;
+      top: 11%;
+      right: 28%;
+      width: 28%;
+      height: 42%;
+      transform: rotate(14deg);
+    }
+
+    .laces span {
+      display: block;
+      width: 100%;
+      height: 8px;
+      margin: 17px 0;
+      border-radius: 99px;
+      background: var(--ink);
+      transform: rotate(-13deg);
+    }
+
+    .mark {
+      position: absolute;
+      z-index: 3;
+      right: 12%;
+      bottom: 28%;
+      width: 23%;
+      height: 11%;
+      border-bottom: 9px solid var(--ink);
+      border-radius: 0 0 80% 20%;
+      transform: rotate(-18deg);
+    }
+
+    .spec-card {
+      position: absolute;
+      z-index: 3;
+      right: 0;
+      bottom: 8%;
+      width: 180px;
+      padding: 18px;
+      border: 1px solid var(--ink);
+      background: var(--acid);
+      box-shadow: 8px 8px 0 var(--ink);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      line-height: 1.55;
+      text-transform: uppercase;
+    }
+
+    @keyframes hover {
+      0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+      50% { transform: translateY(-18px) rotateZ(2deg); }
+    }
+
+    .ticker {
       overflow: hidden;
-      transition: background-color 0.3s, color 0.3s;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--orange);
+      white-space: nowrap;
     }
 
-    #progress-container {
-      position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 100;
+    .ticker-track {
+      display: inline-block;
+      padding: 17px 0;
+      animation: ticker 20s linear infinite;
+      font-family: "DM Mono", monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
     }
-    #progress-bar { height: 100%; background: var(--accent-burgundy); width: 0%; }
 
-    aside {
-      width: var(--sidebar-width);
-      background-color: var(--bg-card);
-      border-right: 1px solid var(--border-color);
+    @keyframes ticker {
+      to { transform: translateX(-50%); }
+    }
+
+    .products {
+      padding: 9vw 5vw;
+    }
+
+    .section-heading {
       display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      z-index: 10;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 46px;
     }
 
-    .sidebar-header { padding: 20px; border-bottom: 2px solid var(--border-color); }
-    .sidebar-header h1 { font-size: 1.1rem; color: var(--accent-burgundy); text-transform: uppercase; letter-spacing: 0.05em; }
-    .sidebar-header .author { font-size: 0.8rem; font-family: var(--font-sans); color: var(--text-muted); font-style: italic; }
-
-    .search-box { padding: 12px 20px; border-bottom: 1px solid var(--border-color); }
-    .search-box input {
-      width: 100%; padding: 8px 12px; border: 1px solid var(--border-color);
-      border-radius: 4px; background: var(--bg-paper); color: var(--text-main); font-family: var(--font-sans); font-size: 0.85rem;
+    .section-heading h2 {
+      max-width: 580px;
+      letter-spacing: -0.07em;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: 0.9;
+      text-transform: uppercase;
     }
 
-    .toc-container { flex: 1; overflow-y: auto; padding: 8px 0; }
-    .toc-title { padding: 8px 20px; font-size: 0.7rem; font-family: var(--font-sans); text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
-    .toc-item {
-      padding: 8px 20px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
-      border-left: 3px solid transparent; color: inherit; text-decoration: none;
+    .section-heading p {
+      max-width: 260px;
+      font-size: 0.86rem;
+      line-height: 1.6;
     }
-    .toc-item:hover { background-color: var(--bg-paper); }
-    .toc-item.active { border-left-color: var(--accent-burgundy); background-color: var(--bg-paper); font-weight: bold; color: var(--accent-burgundy); }
 
-    .sidebar-footer { padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.8rem; }
-    .theme-toggle select { background: var(--bg-paper); color: var(--text-main); border: 1px solid var(--border-color); padding: 4px; border-radius: 4px; }
-
-    main { flex: 1; overflow-y: auto; position: relative; }
-    .content-wrapper { max-width: 850px; margin: 0 auto; padding: 40px; background-color: var(--bg-card); min-height: 100vh; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); }
-
-    .section-tag { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-burgundy); font-weight: 600; margin-bottom: 6px; }
-    h1.doc-title { font-size: 2rem; line-height: 1.2; margin-bottom: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; font-weight: normal; }
-    .doc-subtitle { font-size: 1rem; color: var(--text-muted); font-style: italic; margin-bottom: 24px; }
-
-    .chapter-block { margin-bottom: 40px; line-height: 1.7; font-size: 1rem; }
-    .chapter-block p { margin-bottom: 16px; text-align: justify; }
-    .chapter-block h2 { font-size: 1.3rem; margin: 28px 0 12px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; color: var(--accent-burgundy); font-weight: normal; }
-    
-    ul, ol { margin: 0 0 20px 24px; font-family: var(--font-sans); font-size: 0.95rem; }
-    li { margin-bottom: 8px; }
-
-    blockquote { margin: 20px 0; padding: 14px 20px; border-left: 3px solid var(--accent-burgundy); background-color: var(--bg-paper); font-style: italic; }
-    
-    .formula-box { background: var(--bg-paper); border: 1px solid var(--border-color); padding: 16px; font-family: var(--font-sans); margin: 20px 0; border-radius: 4px; }
-    .formula-title { font-weight: bold; color: var(--accent-burgundy); margin-bottom: 8px; text-transform: uppercase; font-size: 0.85rem; }
-
-    @media (max-width: 900px) {
-      aside { position: absolute; height: 100%; transform: translateX(-100%); transition: transform 0.3s; }
-      aside.open { transform: translateX(0); }
-      .mobile-toggle { display: block !important; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
-    .mobile-toggle { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--accent-burgundy); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; z-index: 100; cursor: pointer; }
+
+    .product-card {
+      position: relative;
+      min-height: 410px;
+      padding: 22px;
+      border: 1px solid var(--ink);
+      background: #e9e3d8;
+      overflow: hidden;
+      transition: transform 250ms ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px) rotate(-1deg);
+    }
+
+    .product-card:nth-child(2) {
+      background: var(--acid);
+    }
+
+    .product-card:nth-child(3) {
+      background: var(--orange);
+    }
+
+    .mini-shoe {
+      position: absolute;
+      top: 28%;
+      left: 12%;
+      width: 75%;
+      height: 27%;
+      border: 6px solid var(--ink);
+      border-radius: 50% 55% 22% 18%;
+      background: #f6f1e8;
+      transform: rotate(-16deg);
+      box-shadow: 13px 15px 0 var(--ink);
+    }
+
+    .product-card:nth-child(2) .mini-shoe {
+      background: var(--blue);
+    }
+
+    .product-card:nth-child(3) .mini-shoe {
+      background: var(--ink);
+    }
+
+    .product-number {
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .product-info {
+      position: absolute;
+      right: 22px;
+      bottom: 22px;
+      left: 22px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+    }
+
+    .product-info h3 {
+      font-family: "Archivo Black", sans-serif;
+      font-size: 1.8rem;
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
+    .price {
+      font-family: "DM Mono", monospace;
+      font-size: 0.8rem;
+    }
+
+    .customizer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      padding: 9vw 5vw;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .customizer h2 {
+      max-width: 600px;
+      color: var(--acid);
+      letter-spacing: -0.07em;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: 0.88;
+      text-transform: uppercase;
+    }
+
+    .controls {
+      align-self: center;
+    }
+
+    .control-group {
+      margin-bottom: 30px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--acid);
+      font-family: "DM Mono", monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .swatches,
+    .sizes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .swatch,
+    .size {
+      border: 1px solid var(--paper);
+      background: transparent;
+      color: var(--paper);
+    }
+
+    .swatch {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+    }
+
+    .swatch.active,
+    .size.active {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    .size {
+      min-width: 50px;
+      padding: 12px;
+    }
+
+    .purchase {
+      width: 100%;
+      margin-top: 10px;
+      background: var(--orange);
+      color: var(--ink);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 24px 5vw;
+      font-family: "DM Mono", monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 800ms ease, transform 800ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 850px) {
+      .nav {
+        display: none;
+      }
+
+      .hero,
+      .customizer {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 13vw;
+      }
+
+      .stage {
+        min-height: 410px;
+      }
+
+      .shoe-wrap {
+        width: min(90vw, 570px);
+      }
+
+      .stage::before {
+        width: 90vw;
+        height: 90vw;
+        max-width: 500px;
+        max-height: 500px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card {
+        min-height: 350px;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading p {
+        margin-top: 20px;
+      }
+    }
   </style>
 </head>
+
 <body>
+  <header class="site-header">
+    <div class="logo">VANT<span>A</span></div>
 
-  <div id="progress-container"><div id="progress-bar"></div></div>
+    <nav class="nav">
+      <a href="#shop">Shop</a>
+      <a href="#story">Story</a>
+      <a href="#customize">Customize</a>
+    </nav>
 
-  <aside id="sidebar">
-    <div class="sidebar-header">
-      <h1>The Intelligent Investor</h1>
-      <div class="author">Benjamin Graham & Jason Zweig</div>
-    </div>
+    <button class="cart" aria-label="Shopping cart">
+      Cart <span class="cart-count">0</span>
+    </button>
+  </header>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search chapters & concepts..." onkeyup="filterChapters()">
-    </div>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">01 / Future footwear system</div>
 
-    <div class="toc-container" id="tocContainer">
-      <div class="toc-title">Front Matter</div>
-      <a class="toc-item active" onclick="showChapter('preface')">Preface & Introduction</a>
-      <div class="toc-title">Part I: Core Strategy</div>
-      <a class="toc-item" onclick="showChapter('ch1')">Ch 1: Investment vs Speculation</a>
-      <a class="toc-item" onclick="showChapter('ch2')">Ch 2: Inflation & Asset Classes</a>
-      <a class="toc-item" onclick="showChapter('ch3')">Ch 3: Century of Stock Market History</a>
-      <a class="toc-item" onclick="showChapter('ch4')">Ch 4: Asset Allocation Strategy</a>
-      <a class="toc-item" onclick="showChapter('ch5')">Ch 5: The Defensive Investor & Common Stocks</a>
-      <a class="toc-item" onclick="showChapter('ch6')">Ch 6: The Enterprising Investor Strategy</a>
-      <a class="toc-item" onclick="showChapter('ch7')">Ch 7: Second-Discipline Stock Selection</a>
-      <div class="toc-title">Part II: Market Behavior & Advice</div>
-      <a class="toc-item" onclick="showChapter('ch8')">Ch 8: Market Fluctuations & Mr. Market</a>
-      <a class="toc-item" onclick="showChapter('ch9')">Ch 9: Investing in Investment Funds</a>
-      <a class="toc-item" onclick="showChapter('ch10')">Ch 10: Advisors & Money Managers</a>
-      <div class="toc-title">Part III: Analysis & Stock Selection</div>
-      <a class="toc-item" onclick="showChapter('ch11')">Ch 11: Security Analysis for Laymen</a>
-      <a class="toc-item" onclick="showChapter('ch12')">Ch 12: Per-Share Earnings Analysis</a>
-      <a class="toc-item" onclick="showChapter('ch13')">Ch 13: Comparing Four Listed Companies</a>
-      <a class="toc-item" onclick="showChapter('ch14')">Ch 14: Stock Selection for Defensive Investors</a>
-      <a class="toc-item" onclick="showChapter('ch15')">Ch 15: Stock Selection for Enterprising Investors</a>
-      <div class="toc-title">Part IV: Special Situations & Margin of Safety</div>
-      <a class="toc-item" onclick="showChapter('ch16')">Ch 16: Convertible Issues & Warrants</a>
-      <a class="toc-item" onclick="showChapter('ch17')">Ch 17: Four Extremely Instructive Case Histories</a>
-      <a class="toc-item" onclick="showChapter('ch18')">Ch 18: Comparison of Eight Pairs of Companies</a>
-      <a class="toc-item" onclick="showChapter('ch19')">Ch 19: Stockholders & Management Policy</a>
-      <a class="toc-item" onclick="showChapter('ch20')">Ch 20: Margin of Safety (Central Concept)</a>
-    </div>
+        <h1>
+          Move<br />
+          <em>different.</em>
+        </h1>
 
-    <div class="sidebar-footer">
-      <span>Framework Edition</span>
-      <div class="theme-toggle">
-        <select onchange="changeTheme(this.value)">
-          <option value="paper">Paper</option>
-          <option value="sepia">Sepia</option>
-          <option value="dark">Dark</option>
-        </select>
+        <p class="hero-description">
+          VANTA-01 is engineered for people who refuse ordinary motion.
+          Sculpted cushioning, zero-gravity comfort, and a silhouette built
+          to be seen from every angle.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button" href="#customize">Build your pair</a>
+          <a class="button secondary" href="#shop">Explore models</a>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="shoe-wrap" id="shoeWrap">
+          <div class="shoe" id="heroShoe">
+            <div class="laces">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="mark"></div>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          VANTA-01<br />
+          Reactive foam<br />
+          287 grams<br />
+          Drop: 06 mm
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker">
+      <div class="ticker-track">
+        Built for velocity // Designed for impact // Built for velocity //
+        Designed for impact // Built for velocity // Designed for impact //
       </div>
     </div>
-  </aside>
 
-  <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <section class="products reveal" id="shop">
+      <div class="section-heading">
+        <h2>Choose<br />your pace.</h2>
+        <p>
+          Three silhouettes. One philosophy: footwear should perform like
+          equipment and look like culture.
+        </p>
+      </div>
 
-  <main id="main-content">
-    <div class="content-wrapper">
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-number">MODEL 001</div>
+          <div class="mini-shoe"></div>
+          <div class="product-info">
+            <h3>Vanta<br />Core</h3>
+            <div class="price">$180</div>
+          </div>
+        </article>
 
-      <section id="preface" class="chapter-block">
-        <div class="section-tag">Front Matter</div>
-        <h1 class="doc-title">Preface & Introduction</h1>
-        <div class="doc-subtitle">Framework for Rational Decision Making</div>
-        <p>Investing does not require superior intelligence, insider knowledge, or complex math. It requires a sound intellectual framework to make decisions and emotional discipline to keep feelings from ruining that framework.</p>
-        <blockquote>"To invest successfully over a lifetime does not require a stratospheric IQ... What's needed is a sound intellectual framework." — Warren E. Buffett</blockquote>
-        <h2>Two Key Lessons</h2>
-        <ul>
-          <li><strong>Growth ≠ Profit:</strong> High corporate growth prospects rarely translate into automatic investor returns due to overpaying for hype.</li>
-          <li><strong>Expert Fallibility:</strong> Wall Street professionals do not have reliable ways to consistently predict market trends or stock performance.</li>
-        </ul>
-      </section>
+        <article class="product-card">
+          <div class="product-number">MODEL 002</div>
+          <div class="mini-shoe"></div>
+          <div class="product-info">
+            <h3>Vanta<br />Volt</h3>
+            <div class="price">$210</div>
+          </div>
+        </article>
 
-      <section id="ch1" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 1</div>
-        <h1 class="doc-title">Investment vs. Speculation</h1>
-        <p>Graham defines an investment operation rigorously:</p>
-        <div class="formula-box">
-          <div class="formula-title">Graham's Investment Triad</div>
-          1. Thorough financial analysis of business fundamentals.<br>
-          2. Safety of principal protection against severe losses.<br>
-          3. Adequate return expectation (rather than getting rich quick).
+        <article class="product-card">
+          <div class="product-number">MODEL 003</div>
+          <div class="mini-shoe"></div>
+          <div class="product-info">
+            <h3>Vanta<br />Night</h3>
+            <div class="price">$195</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="customizer reveal" id="customize">
+      <div>
+        <div class="eyebrow">02 / Make it yours</div>
+        <h2>Color<br />outside.</h2>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label>Choose color</label>
+
+          <div class="swatches">
+            <button
+              class="swatch active"
+              style="background: #d9ff42"
+              data-color="#d9ff42"
+              aria-label="Acid green"
+            ></button>
+
+            <button
+              class="swatch"
+              style="background: #ff6b35"
+              data-color="#ff6b35"
+              aria-label="Orange"
+            ></button>
+
+            <button
+              class="swatch"
+              style="background: #3d5afe"
+              data-color="#3d5afe"
+              aria-label="Blue"
+            ></button>
+
+            <button
+              class="swatch"
+              style="background: #f6f1e8"
+              data-color="#f6f1e8"
+              aria-label="Bone"
+            ></button>
+          </div>
         </div>
-        <p>Operations failing any of these three requirements are speculative. Unintelligent speculation occurs when speculating under the illusion that you are investing.</p>
-      </section>
 
-      <section id="ch2" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 2</div>
-        <h1 class="doc-title">Inflation & Asset Classes</h1>
-        <p>Equities are not a perfect hedge against inflation, but they offer far better long-term purchasing power protection than fixed-income assets (bonds and cash).</p>
-        <h2>Key Takeaways</h2>
-        <ul>
-          <li>Inflation erodes fixed yields over time.</li>
-          <li>Corporate earnings do not automatically scale upward during high inflation due to rising capital costs.</li>
-          <li>REITs and TIPS (Treasury Inflation-Protected Securities) provide supplemental safety.</li>
-        </ul>
-      </section>
+        <div class="control-group">
+          <label>Select size</label>
 
-      <section id="ch3" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 3</div>
-        <h1 class="doc-title">A Century of Stock Market History</h1>
-        <p>Historical market cycles show that extreme bull markets always end in corrections. Investors must study market history to avoid projecting recent price gains indefinitely into the future.</p>
-      </section>
-
-      <section id="ch4" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 4</div>
-        <h1 class="doc-title">Asset Allocation Strategy</h1>
-        <p>Graham proposes a rules-based allocation for defensive investors to keep emotion out of market timing:</p>
-        <div class="formula-box">
-          <div class="formula-title">The 25/75 Allocation Rule</div>
-          • Maintain a baseline split of <strong>50% Common Stocks / 50% High-Grade Bonds</strong>.<br>
-          • Shift up to <strong>75% stocks</strong> when markets are abnormally cheap.<br>
-          • Drop down to <strong>25% stocks</strong> when markets reach extreme valuation highs.
+          <div class="sizes">
+            <button class="size" data-size="7">7</button>
+            <button class="size active" data-size="8">8</button>
+            <button class="size" data-size="9">9</button>
+            <button class="size" data-size="10">10</button>
+            <button class="size" data-size="11">11</button>
+          </div>
         </div>
-      </section>
 
-      <section id="ch5" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 5</div>
-        <h1 class="doc-title">The Defensive Investor & Common Stocks</h1>
-        <p>Defensive investors prioritize safety and freedom from stress over market-beating returns. They achieve this via broad diversification across leading, financially sound companies or index funds.</p>
-      </section>
+        <button class="button purchase" id="purchase">
+          Add Vanta-01 to cart
+        </button>
+      </div>
+    </section>
+  </main>
 
-      <section id="ch6" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 6</div>
-        <h1 class="doc-title">The Enterprising Investor Strategy: Negative Approach</h1>
-        <p>Enterprising (active) investors should start by avoiding high-risk, low-probability plays:</p>
-        <ul>
-          <li>Avoid junk bonds and high-yield preferred stocks without sufficient coverage.</li>
-          <li>Avoid foreign bonds unless priced at severe panic discounts.</li>
-          <li>Avoid IPOs (Initial Public Offerings), which are built to favor sellers over buyers.</li>
-        </ul>
-      </section>
+  <footer>
+    <span>Vanta footwear system</span>
+    <span>Made for the next move</span>
+  </footer>
 
-      <section id="ch7" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 7</div>
-        <h1 class="doc-title">Second-Discipline Stock Selection</h1>
-        <p>To achieve superior results, the active investor should focus on:</p>
-        <ul>
-          <li><strong>Buying in depressed markets:</strong> Capitalizing on overall panic.</li>
-          <li><strong>Bargain Issues (Net-Nets):</strong> Buying stocks selling below their Net Current Asset Value (NCAV).</li>
-          <li><strong>Special Situations:</strong> Arbitrage, liquidations, and corporate reorganizations.</li>
-        </ul>
-      </section>
+  <script>
+    const root = document.documentElement;
+    const shoeWrap = document.querySelector("#shoeWrap");
+    const heroShoe = document.querySelector("#heroShoe");
+    const stage = document.querySelector("#stage");
+    const cartCount = document.querySelector(".cart-count");
+    const purchase = document.querySelector("#purchase");
 
-      <section id="ch8" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 8</div>
-        <h1 class="doc-title">Market Fluctuations & "Mr. Market"</h1>
-        <p>Graham introduces his famous allegory: Imagine buying a share of a business where your partner is an emotional character named <strong>Mr. Market</strong>.</p>
-        <blockquote>"Mr. Market is your servant, not your guide. He offers prices every day based on his mood swings—ranging from wild euphoria to deep depression. You are free to ignore him or exploit his folly."</blockquote>
-        <p>Do not mistake market noise for business value updates.</p>
-      </section>
+    let cart = 0;
+    let selectedSize = "8";
 
-      <section id="ch9" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 9</div>
-        <h1 class="doc-title">Investing in Investment Funds</h1>
-        <p>Most active mutual funds fail to beat market indexes over long horizons due to high management fees, trading costs, and cash drag. Indexing is recommended for most individual investors.</p>
-      </section>
+    stage.addEventListener("pointermove", (event) => {
+      const bounds = stage.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
 
-      <section id="ch10" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 10</div>
-        <h1 class="doc-title">Advisors & Money Managers</h1>
-        <p>Be cautious with financial advisers. Seek independent advisers who focus on capital preservation rather than those selling commission-based financial products.</p>
-      </section>
+      shoeWrap.style.transform = `
+        translateY(-8px)
+        rotateX(${y * -12}deg)
+        rotateY(${x * 22}deg)
+        rotateZ(${x * 4}deg)
+      `;
+    });
 
-      <section id="ch11" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 11</div>
-        <h1 class="doc-title">Security Analysis for Laymen</h1>
-        <p>Focus analysis on bond coverage, earnings stability, balance sheet strength, dividend track records, and realistic growth forecasts.</p>
-      </section>
+    stage.addEventListener("pointerleave", () => {
+      shoeWrap.style.transform = "";
+    });
 
-      <section id="ch12" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 12</div>
-        <h1 class="doc-title">Per-Share Earnings Analysis</h1>
-        <p>Don't take single-year Earnings Per Share (EPS) at face value. Look at 7-to-10-year average earnings to account for accounting tricks, dilution, and economic cycles.</p>
-      </section>
+    document.querySelectorAll(".swatch").forEach((swatch) => {
+      swatch.addEventListener("click", () => {
+        document
+          .querySelectorAll(".swatch")
+          .forEach((item) => item.classList.remove("active"));
 
-      <section id="ch13" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 13</div>
-        <h1 class="doc-title">Comparing Four Listed Companies</h1>
-        <p>Graham works through direct comparisons of balance sheets and income statements, proving that popular growth stocks are often priced for perfection, creating asymmetric downside risk.</p>
-      </section>
+        swatch.classList.add("active");
+        root.style.setProperty("--shoe", swatch.dataset.color);
+      });
+    });
 
-      <section id="ch14" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 14</div>
-        <h1 class="doc-title">Stock Selection for Defensive Investors</h1>
-        <div class="formula-box">
-          <div class="formula-title">7 Defensive Selection Rules</div>
-          1. <strong>Adequate Size:</strong> Minimum revenue threshold to rule out small, fragile firms.<br>
-          2. <strong>Strong Finances:</strong> Current assets at least 2x current liabilities; debt < Net Current Assets.<br>
-          3. <strong>Earnings Stability:</strong> Positive earnings in each of the past 10 years.<br>
-          4. <strong>Dividend Record:</strong> Uninterrupted dividends for at least 20 years.<br>
-          5. <strong>Earnings Growth:</strong> Min 33% growth in EPS over the past decade.<br>
-          6. <strong>Moderate P/E Ratio:</strong> Price no more than 15x average 3-year earnings.<br>
-          7. <strong>Moderate P/B Ratio:</strong> Price to Book < 1.5 (or P/E x P/B < 22.5).
-        </div>
-      </section>
+    document.querySelectorAll(".size").forEach((size) => {
+      size.addEventListener("click", () => {
+        document
+          .querySelectorAll(".size")
+          .forEach((item) => item.classList.remove("active"));
 
-      <section id="ch15" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 15</div>
-        <h1 class="doc-title">Stock Selection for Enterprising Investors</h1>
-        <p>Enterprising investors seek larger returns by applying looser financial size rules while insisting on lower valuation metrics (e.g., buying below 120% of net tangible assets or using Net Current Asset Value formulas).</p>
-      </section>
+        size.classList.add("active");
+        selectedSize = size.dataset.size;
+      });
+    });
 
-      <section id="ch16" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 16</div>
-        <h1 class="doc-title">Convertible Issues & Warrants</h1>
-        <p>Convertible bonds and warrants often promise the benefits of both stocks and bonds, but in practice, they are often structured to favor issuers rather than buyers.</p>
-      </section>
+    purchase.addEventListener("click", () => {
+      cart += 1;
+      cartCount.textContent = cart;
+      purchase.textContent = `Added size ${selectedSize}`;
+      purchase.style.background = "#d9ff42";
 
-      <section id="ch17" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 17</div>
-        <h1 class="doc-title">Four Instructive Case Histories</h1>
-        <p>Case studies showing how financial engineering, excessive leverage, and speculative market manias destroy long-term investor capital.</p>
-      </section>
+      setTimeout(() => {
+        purchase.textContent = "Add Vanta-01 to cart";
+        purchase.style.background = "";
+      }, 1800);
+    });
 
-      <section id="ch18" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 18</div>
-        <h1 class="doc-title">Comparison of Eight Pairs of Companies</h1>
-        <p>Side-by-side comparison illustrating how market prices regularly misvalue companies with identical underlying fundamental earnings power.</p>
-      </section>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
 
-      <section id="ch19" class="chapter-block" style="display:none;">
-        <div class="section-tag">Chapter 19</div>
-        <h1 class="doc-title">Stockholders & Management Policy</h1>
-        <p>Shareholders are owners. They should actively vote against ineffective management teams, demand rational dividend policies, and ensure capital isn't wasted on poor acquisitions.</p>
-      </section>
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
 
-      <section id="ch20" class="chapter-block" style="display:none
+    heroShoe.addEventListener("click", () => {
+      shoeWrap.animate(
+        [
+          { transform: "scale(1) rotateZ(0deg)" },
+          { transform: "scale(1.08) rotateZ(-8deg)" },
+          { transform: "scale(1) rotateZ(0deg)" }
+        ],
+        {
+          duration: 700,
+          easing: "cubic-bezier(.2,.8,.2,1)"
+        }
+      );
+    });
+  </script>
+</body>
+</html>
