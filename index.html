@@ -3,136 +3,340 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mobile Japanese 3D Experience</title>
+  <title>Edo Crafts • Experiential 3D Mobile</title>
+  
+  <!-- Core Dependencies -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
   <style>
-    * { touch-action: manipulation; box-sizing: border-box; }
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #080708; color: #e2d9cc; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    #webgl-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+    * { touch-action: manipulation; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; background-color: #080708; color: #E2D9CC; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif; }
+
+    /* WebGL Canvas Viewport */
+    #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+
+    /* Scrollable UI Overlay Structure */
+    .app-viewport { position: relative; z-index: 2; width: 100%; min-height: 250vh; pointer-events: auto; }
     
-    .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; }
-    .brand-header { font-size: 14px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; border-left: 2px solid #8c2323; padding-left: 8px; }
-    
-    /* Native Mobile Bottom Sheet Drawer */
-    .bottom-sheet { 
-      position: absolute; bottom: 0; left: 0; width: 100%;
-      background: rgba(18, 16, 16, 0.92); border: 1px solid #28211d; border-top: 2px solid #8c2323; 
-      border-radius: 16px 16px 0 0; padding: 24px 20px; pointer-events: auto; 
-      transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); 
-      backdrop-filter: blur(10px); z-index: 10;
-    }
-    .bottom-sheet.active { transform: translateY(0); }
-    .bottom-sheet h3 { color: #d4af37; margin: 0 0 8px 0; font-size: 16px; }
-    .bottom-sheet p { font-size: 12px; color: #a69888; margin: 0 0 16px 0; line-height: 1.5; }
-    .btn-buy { background: #8c2323; color: #fff; border: none; width: 100%; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 14px; }
+    /* Mobile Header Navigation */
+    .mobile-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; background: linear-gradient(180deg, rgba(8,7,8,0.9) 0%, rgba(8,7,8,0) 100%); backdrop-filter: blur(4px); }
+    .brand-title { font-size: 13px; font-weight: 700; letter-spacing: 3px; color: #D4AF37; text-transform: uppercase; border-left: 3px solid #8C2323; padding-left: 10px; }
+    .cart-trigger { background: #1A1614; border: 1px solid #8C2323; color: #C5A059; padding: 6px 12px; border-radius: 20px; font-size: 11px; letter-spacing: 1px; }
+
+    /* Content Cards Section */
+    .content-section { height: 100vh; display: flex; align-items: flex-end; padding: 30px 20px 140px 20px; }
+    .product-card { background: rgba(20, 17, 16, 0.85); border: 1px solid #28211D; border-left: 3px solid #D4AF37; border-radius: 8px; padding: 18px; width: 100%; backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: translateY(0); transition: transform 0.3s ease; }
+    .product-card:active { transform: scale(0.98); }
+    .card-tag { font-size: 10px; color: #8C2323; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; }
+    .card-title { font-family: 'Georgia', serif; font-size: 18px; color: #D4AF37; margin: 0 0 6px 0; }
+    .card-subtitle { font-size: 12px; color: #A69888; margin: 0; line-height: 1.4; }
+
+    /* Authentic Shoji Screen Bottom Pop Drawer */
+    .shoji-drawer { position: fixed; bottom: 0; left: 0; width: 100%; background: #121010; border-top: 3px solid #8C2323; border-radius: 20px 20px 0 0; padding: 24px 20px 32px 20px; z-index: 20; transform: translateY(105%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.9); }
+    .shoji-drawer.active { transform: translateY(0); }
+    .shoji-handle { width: 40px; height: 4px; background: #28211D; border-radius: 2px; margin: 0 auto 16px auto; }
+    .shoji-grid-bg { background-image: linear-gradient(#1A1614 1px, transparent 1px), linear-gradient(90deg, #1A1614 1px, transparent 1px); background-size: 20px 20px; border: 1px solid #28211D; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    .drawer-title { font-family: 'Georgia', serif; font-size: 18px; color: #D4AF37; margin: 0 0 6px 0; }
+    .drawer-desc { font-size: 12px; color: #E2D9CC; line-height: 1.6; margin: 0; }
+    .btn-action { width: 100%; background: linear-gradient(135deg, #8C2323 0%, #5E1818 100%); color: #FFF; border: 1px solid #D4AF37; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 12px; }
   </style>
 </head>
-<body>
-  <canvas id="webgl-canvas"></canvas>
+<body><!-- 3D Canvas -->
+  <div id="canvas-container"></div>
 
-  <div class="ui-layer">
-    <div class="brand-header">Edo Crafts • 3D Experience</div>
+  <!-- UI Overlay -->
+  <div class="app-viewport">
+    <header class="mobile-header">
+      <div class="brand-title">Edo Crafts</div>
+      <div class="cart-trigger">COLLECTION</div>
+    </header>
+
+    <section class="content-section">
+      <div class="product-card" onclick="openShoji('Kyoto Hand-Painted Silk', 'Artisanal kimono silk created using traditional Edo dyeing techniques. Tap screen or scroll to trigger fluid 3D character reaction.')">
+        <div class="card-tag">Exquisite Craft</div>
+        <h2 class="card-title">Silk & Cherry Blossom</h2>
+        <p class="card-subtitle">Swipe or tap anywhere to interact with the 3D scene & trigger jiggle physics.</p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="product-card" onclick="openShoji('Bizenware Tea Set', 'Hand-molded unglazed stoneware fired in dragon kilns for 14 days.')">
+        <div class="card-tag">Master Pottery</div>
+        <h2 class="card-title">Ancient Ceramics</h2>
+        <p class="card-subtitle">Scroll down to observe dynamic character floating and lighting transitions.</p>
+      </div>
+    </section>
   </div>
 
-  <div id="sheet" class="bottom-sheet">
-    <h3 id="sheet-title">Handmade Artisanal Kimono</h3>
-    <p id="sheet-desc">Woven with traditional Japanese silk patterns and dyed in authentic crimson lacquer indigo tones.</p>
-    <button class="btn-buy" onclick="closeSheet()">Dismiss Drawer</button>
+  <!-- Shoji Screen Bottom Pop Drawer -->
+  <div id="shoji-drawer" class="shoji-drawer">
+    <div class="shoji-handle"></div>
+    <div class="shoji-grid-bg">
+      <h3 id="drawer-title" class="drawer-title">Artifact Selected</h3>
+      <p id="drawer-desc" class="drawer-desc">Description loads dynamically on click or scroll events.</p>
+    </div>
+    <button class="btn-action" onclick="closeShoji()">Close Drawer</button>
   </div>
 
   <script>
-    // 1. Mobile WebGL Setup
-    const canvas = document.getElementById('webgl-canvas');
+    // -----------------------------------------------------------
+    // 1. THREE.JS SCENE SETUP & OPTIMIZATION
+    // -----------------------------------------------------------
+    const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x080708, 0.15);
+    scene.fog = new THREE.FogExp2(0x080708, 0.12);
 
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 4);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 4.5);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0)); // Cap PPI for 60fps mobile WebGL
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    container.appendChild(renderer.domElement);
 
-    // 2. Atmospheric Warm Lighting Rig
-    const ambientLight = new THREE.AmbientLight(0xffd5a0, 0.8);
+    // -----------------------------------------------------------
+    // 2. ATMOSPHERIC LIGHTING RIG
+    // -----------------------------------------------------------
+    const ambientLight = new THREE.AmbientLight(0xFFD5A0, 0.7);
     scene.add(ambientLight);
 
-    const warmPointLight = new THREE.PointLight(0xff6b35, 2.5, 10);
-    warmPointLight.position.set(-1.5, 1, 2);
-    scene.add(warmPointLight);
+    // Warm Lantern Point Light
+    const lanternLight = new THREE.PointLight(0xFF6B35, 3.0, 8);
+    lanternLight.position.set(-1.8, 1.2, 2.0);
+    scene.add(lanternLight);
 
-    const coolRimLight = new THREE.DirectionalLight(0x4a7c59, 1.2);
-    coolRimLight.position.set(2, 2, -2);
-    scene.add(coolRimLight);
+    // Cool Rim Light
+    const rimLight = new THREE.DirectionalLight(0x4A7C59, 1.5);
+    rimLight.position.set(2.0, 2.5, -1.5);
+    scene.add(rimLight);  // -----------------------------------------------------------
+    // 3. CUSTOM GLSL SHADER CHARACTER MESH & SOFT-BODY PHYSICS
+    // -----------------------------------------------------------
+    const vertexShader = `
+      uniform float uTime;
+      uniform float uJiggleForce;
+      uniform vec2 uJiggleCenter;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
 
-    // 3. Character Anchor Mesh
-    const geo = new THREE.CylinderGeometry(0.5, 0.7, 2, 32);
-    const mat = new THREE.MeshStandardMaterial({ color: 0x8c2323, roughness: 0.3, metalness: 0.1 });
-    const characterMesh = new THREE.Mesh(geo, mat);
-    characterMesh.position.set(0, -0.3, 0);
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        vec3 pos = position;
+
+        // Damped spring-based radial displacement around chest coordinates (0.0, -0.1)
+        float dist = distance(uv, uJiggleCenter);
+        float influence = smoothstep(0.45, 0.0, dist);
+        
+        // Elastic sine wave deformation along z-axis normal
+        float wave = sin(uTime * 12.0 - dist * 10.0) * uJiggleForce * influence;
+        pos.z += wave;
+        pos.y += wave * 0.25; // Vertical elastic recoil
+
+        vec4 worldPos = modelMatrix * vec4(pos, 1.0);
+        vWorldPosition = worldPos.xyz;
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const fragmentShader = `
+      uniform sampler2D uTexture;
+      uniform float uTime;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+
+      void main() {
+        vec4 texColor = texture2D(uTexture, vUv);
+        
+        // Atmospheric Rim Glow Lighting
+        vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+        float rim = 1.0 - max(dot(viewDir, vNormal), 0.0);
+        rim = pow(rim, 3.0);
+        vec3 rimColor = vec3(0.83, 0.68, 0.35) * rim * 0.6; // Gold rim light
+
+        vec3 finalColor = texColor.rgb + rimColor;
+        gl_FragColor = vec4(finalColor, texColor.a);
+      }
+    `;
+
+    // Load High-Res Character Artwork onto 3D Subdivided Plane
+    const textureLoader = new THREE.TextureLoader();
+    // High quality Geisha illustration texture
+    const charTexture = textureLoader.load('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');
+
+    const planeGeo = new THREE.PlaneGeometry(2.2, 3.2, 128, 128); // 128x128 subdivided mesh for ultra-smooth deformation
+    const charUniforms = {
+      uTexture: { value: charTexture },
+      uTime: { value: 0 },
+      uJiggleForce: { value: 0 },
+      uJiggleCenter: { value: new THREE.Vector2(0.5, 0.55) } // Mapped chest UV location
+    };
+
+    const charMaterial = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: charUniforms,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+
+    const characterMesh = new THREE.Mesh(planeGeo, charMaterial);
+    characterMesh.position.set(0, -0.2, 0);
     scene.add(characterMesh);
 
-    // 4. Secondary Motion / Spring-Damping Physics State
-    let springPosY = 0, velocityY = 0;
-    const stiffness = 0.08, damping = 0.75;
+    // -----------------------------------------------------------
+    // 4. 3D SAKURA PETAL PARTICLE SYSTEM
+    // -----------------------------------------------------------
+    const particleCount = 250;
+    const particleGeo = new THREE.BufferGeometry();
+    const posArray = new Float32Array(particleCount * 3);
+    const scaleArray = new Float32Array(particleCount);
 
-    // 5. Native Touch Event Handler
-    let startY = 0, touchMoved = false;
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      posArray[i] = (Math.random() - 0.5) * 10;
+      posArray[i + 1] = (Math.random() - 0.5) * 10;
+      posArray[i + 2] = (Math.random() - 0.5) * 5;
+      scaleArray[i / 3] = Math.random() * 0.04 + 0.01;
+    }
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.05,
+      color: 0xE8B4B8, // Sakura Pink
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending
+    });
+
+    const sakuraParticles = new THREE.Points(particleGeo, particleMat);
+    scene.add(sakuraParticles);
+
+    // -----------------------------------------------------------
+    // 5. SPRING-DAMPED JIGGLE PHYSICS ENGINE
+    // -----------------------------------------------------------
+    let jiggleVelocity = 0.0;
+    let jiggleDisplacement = 0.0;
+    const springStiffness = 0.12;
+    const damping = 0.82;
+
+    function triggerJiggleImpulse(force) {
+      jiggleVelocity += force;
+    }
+
+    function updatePhysics() {
+      // Damped Harmonic Oscillator ODE Solver
+      const springForce = -springStiffness * jiggleDisplacement;
+      jiggleVelocity += springForce;
+      jiggleVelocity *= damping;
+      jiggleDisplacement += jiggleVelocity;
+
+      charUniforms.uJiggleForce.value = jiggleDisplacement;
+    }// -----------------------------------------------------------
+    // 6. TOUCH CONTROLS & INTERACTION LISTENERS
+    // -----------------------------------------------------------
+    let startY = 0;
+    let touchMoved = false;
 
     window.addEventListener('touchstart', (e) => {
       startY = e.touches[0].clientY;
       touchMoved = false;
-    });
+    }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
       const deltaY = e.touches[0].clientY - startY;
-      if (Math.abs(deltaY) > 8) {
+      if (Math.abs(deltaY) > 6) {
         touchMoved = true;
-        // Inject velocity impulse into physics loop
-        velocityY += deltaY * 0.0012; 
-        characterMesh.rotation.y += deltaY * 0.005;
+        // Inject velocity impulse proportional to swipe speed
+        triggerJiggleImpulse(deltaY * 0.0025);
+        characterMesh.rotation.y = deltaY * 0.001;
         startY = e.touches[0].clientY;
       }
-    });
+    }, { passive: true });
 
     window.addEventListener('touchend', () => {
       if (!touchMoved) {
-        triggerSheet("Artisanal Crafts Showcase", "Tap and drag on screen to trigger touch physics and rotate character.");
-        velocityY += 0.06; // Tap physics recoil
+        // Tap impulse trigger
+        triggerJiggleImpulse(0.08);
       }
     });
 
-    function triggerSheet(title, desc) {
-      document.getElementById('sheet-title').innerText = title;
-      document.getElementById('sheet-desc').innerText = desc;
-      document.getElementById('sheet').classList.add('active');
+    // -----------------------------------------------------------
+    // 7. SHOJI DRAWER & GSAP SCROLL TRIGGERS
+    // -----------------------------------------------------------
+    const drawer = document.getElementById('shoji-drawer');
+
+    function openShoji(title, desc) {
+      document.getElementById('drawer-title').innerText = title;
+      document.getElementById('drawer-desc').innerText = desc;
+      drawer.classList.add('active');
+      triggerJiggleImpulse(0.1); // Recoil on click
     }
 
-    function closeSheet() {
-      document.getElementById('sheet').classList.remove('active');
+    function closeShoji() {
+      drawer.classList.remove('active');
     }
 
-    // 6. Smooth 60FPS Physics Render Loop
+    // GSAP ScrollTrigger for 3D Camera & Model Sync
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      
+      // Floating mesh motion
+      characterMesh.position.y = -0.2 + Math.sin(scrollY * 0.003) * 0.15;
+      characterMesh.rotation.y = scrollY * 0.001;
+
+      // Pulse lantern light on scroll
+      lanternLight.intensity = 3.0 + Math.sin(scrollY * 0.01) * 1.2;
+
+      // Trigger physics displacement on active scrolling
+      triggerJiggleImpulse(0.015);
+
+      // Auto-open bottom drawer when scrolling near bottom
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+        openShoji("Artisanal Crafts Showcase", "Hand-crafted ceramics and silks preserved through generations.");
+      }
+    });
+
+    // -----------------------------------------------------------
+    // 8. RENDER LOOP (60 FPS)
+    // -----------------------------------------------------------
+    const clock = new THREE.Clock();
+
     function animate() {
       requestAnimationFrame(animate);
 
-      // Solve Damped Harmonic Oscillator Equations
-      const forceY = -stiffness * springPosY;
-      velocityY += forceY;
-      velocityY *= damping;
-      springPosY += velocityY;
+      const elapsedTime = clock.getElapsedTime();
+      charUniforms.uTime.value = elapsedTime;
 
-      // Soft-body mesh deformation recoil
-      characterMesh.scale.y = 1 + springPosY * 0.35;
-      characterMesh.scale.x = 1 - springPosY * 0.18;
+      // Update Physics
+      updatePhysics();
+
+      // Lantern Flame Flicker Simulation
+      lanternLight.position.x = -1.8 + Math.sin(elapsedTime * 4.0) * 0.05;
+      lanternLight.position.y = 1.2 + Math.cos(elapsedTime * 3.0) * 0.05;
+
+      // Animate Sakura Particles (Wind turbulence effect)
+      const positions = sakuraParticles.geometry.attributes.position.array;
+      for (let i = 1; i < particleCount * 3; i += 3) {
+        positions[i] -= 0.008; // Fall speed
+        positions[i - 1] += Math.sin(elapsedTime + i) * 0.003; // Horizontal wind sway
+        
+        if (positions[i] < -5) positions[i] = 5; // Loop back top
+      }
+      sakuraParticles.geometry.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
     }
-    animate();
+animate();
 
-    // 7. Responsive Viewport Orientation Listener
+    // Responsive Viewport Resize
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
