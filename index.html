@@ -1,854 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VANTA // Future Motion</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mobile Japanese 3D Experience</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
-    :root {
-      --ink: #101010;
-      --paper: #f4f0e9;
-      --acid: #d9ff42;
-      --orange: #ff6b35;
-      --blue: #3d5afe;
-      --shoe: #d9ff42;
-      --shadow: rgba(16, 16, 16, 0.22);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      min-width: 320px;
-      overflow-x: hidden;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: "Manrope", sans-serif;
-    }
-
-    body::before {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      content: "";
-      opacity: 0.16;
-      background-image:
-        linear-gradient(rgba(16, 16, 16, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 16, 16, 0.08) 1px, transparent 1px);
-      background-size: 38px 38px;
-      mask-image: linear-gradient(to bottom, black, transparent 75%);
-    }
-
-    button {
-      border: 0;
-      color: inherit;
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 28px 5vw;
-      border-bottom: 1px solid rgba(16, 16, 16, 0.2);
-    }
-
-    .logo {
-      letter-spacing: -0.08em;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(1.8rem, 3vw, 3rem);
-    }
-
-    .logo span {
-      color: var(--orange);
-    }
-
-    .nav {
-      display: flex;
-      gap: 30px;
-      font-family: "DM Mono", monospace;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-    }
-
-    .nav a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .cart {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      padding: 10px 14px;
-      border: 1px solid var(--ink);
-      border-radius: 999px;
-      background: var(--acid);
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-    }
-
-    .cart-count {
-      display: grid;
-      width: 20px;
-      height: 20px;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    .hero {
-      position: relative;
-      display: grid;
-      min-height: calc(100vh - 98px);
-      grid-template-columns: 0.9fr 1.1fr;
-      align-items: center;
-      gap: 2rem;
-      padding: 7vw 5vw 9vw;
-    }
-
-    .hero-copy {
-      position: relative;
-      z-index: 2;
-      max-width: 680px;
-    }
-
-    .eyebrow {
-      margin-bottom: 24px;
-      color: var(--orange);
-      font-family: "DM Mono", monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 720px;
-      letter-spacing: -0.085em;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(4.5rem, 10vw, 11rem);
-      line-height: 0.84;
-      text-transform: uppercase;
-    }
-
-    h1 em {
-      color: var(--orange);
-      font-style: normal;
-    }
-
-    .hero-description {
-      max-width: 410px;
-      margin-top: 32px;
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 34px;
-    }
-
-    .button {
-      padding: 16px 22px;
-      border: 1px solid var(--ink);
-      border-radius: 999px;
-      background: var(--ink);
-      color: var(--paper);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: transform 180ms ease, box-shadow 180ms ease;
-    }
-
-    .button:hover {
-      transform: translateY(-4px);
-      box-shadow: 6px 6px 0 var(--orange);
-    }
-
-    .button.secondary {
-      background: transparent;
-      color: var(--ink);
-    }
-
-    .stage {
-      position: relative;
-      display: grid;
-      min-height: 560px;
-      place-items: center;
-      perspective: 1200px;
-    }
-
-    .stage::before {
-      position: absolute;
-      width: min(45vw, 590px);
-      height: min(45vw, 590px);
-      border-radius: 50%;
-      background: var(--blue);
-      content: "";
-      opacity: 0.95;
-    }
-
-    .stage::after {
-      position: absolute;
-      width: 80%;
-      height: 28px;
-      bottom: 15%;
-      border-radius: 50%;
-      background: var(--shadow);
-      content: "";
-      filter: blur(18px);
-      transform: rotate(-10deg);
-    }
-
-    .shoe-wrap {
-      position: relative;
-      z-index: 1;
-      width: min(43vw, 570px);
-      aspect-ratio: 1.6;
-      transform-style: preserve-3d;
-      animation: hover 4s ease-in-out infinite;
-      transition: transform 180ms ease-out;
-    }
-
-    .shoe {
-      position: absolute;
-      inset: 18% 4% 25%;
-      border: 8px solid var(--ink);
-      border-radius: 48% 50% 22% 18% / 45% 54% 28% 24%;
-      background: var(--shoe);
-      box-shadow:
-        inset -30px -28px 0 rgba(0, 0, 0, 0.08),
-        20px 25px 0 var(--ink);
-      transform: rotate(-13deg) skewY(-4deg);
-    }
-
-    .shoe::before {
-      position: absolute;
-      top: -26%;
-      right: 15%;
-      width: 53%;
-      height: 68%;
-      border: 8px solid var(--ink);
-      border-bottom: 0;
-      border-radius: 54% 48% 0 0;
-      background: var(--shoe);
-      content: "";
-      transform: skewX(16deg) rotate(3deg);
-    }
-
-    .shoe::after {
-      position: absolute;
-      right: -8%;
-      bottom: -13%;
-      left: -4%;
-      height: 27%;
-      border: 8px solid var(--ink);
-      border-radius: 20% 18% 48% 35%;
-      background: #f7f3ed;
-      content: "";
-      transform: rotate(-1deg);
-    }
-
-    .laces {
-      position: absolute;
-      z-index: 2;
-      top: 11%;
-      right: 28%;
-      width: 28%;
-      height: 42%;
-      transform: rotate(14deg);
-    }
-
-    .laces span {
-      display: block;
-      width: 100%;
-      height: 8px;
-      margin: 17px 0;
-      border-radius: 99px;
-      background: var(--ink);
-      transform: rotate(-13deg);
-    }
-
-    .mark {
-      position: absolute;
-      z-index: 3;
-      right: 12%;
-      bottom: 28%;
-      width: 23%;
-      height: 11%;
-      border-bottom: 9px solid var(--ink);
-      border-radius: 0 0 80% 20%;
-      transform: rotate(-18deg);
-    }
-
-    .spec-card {
-      position: absolute;
-      z-index: 3;
-      right: 0;
-      bottom: 8%;
-      width: 180px;
-      padding: 18px;
-      border: 1px solid var(--ink);
-      background: var(--acid);
-      box-shadow: 8px 8px 0 var(--ink);
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      line-height: 1.55;
-      text-transform: uppercase;
-    }
-
-    @keyframes hover {
-      0%, 100% { transform: translateY(0) rotateZ(-2deg); }
-      50% { transform: translateY(-18px) rotateZ(2deg); }
-    }
-
-    .ticker {
-      overflow: hidden;
-      border-top: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
-      background: var(--orange);
-      white-space: nowrap;
-    }
-
-    .ticker-track {
-      display: inline-block;
-      padding: 17px 0;
-      animation: ticker 20s linear infinite;
-      font-family: "DM Mono", monospace;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-    }
-
-    @keyframes ticker {
-      to { transform: translateX(-50%); }
-    }
-
-    .products {
-      padding: 9vw 5vw;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: 46px;
-    }
-
-    .section-heading h2 {
-      max-width: 580px;
-      letter-spacing: -0.07em;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(3rem, 7vw, 7rem);
-      line-height: 0.9;
-      text-transform: uppercase;
-    }
-
-    .section-heading p {
-      max-width: 260px;
-      font-size: 0.86rem;
-      line-height: 1.6;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .product-card {
-      position: relative;
-      min-height: 410px;
-      padding: 22px;
-      border: 1px solid var(--ink);
-      background: #e9e3d8;
-      overflow: hidden;
-      transition: transform 250ms ease;
-    }
-
-    .product-card:hover {
-      transform: translateY(-10px) rotate(-1deg);
-    }
-
-    .product-card:nth-child(2) {
-      background: var(--acid);
-    }
-
-    .product-card:nth-child(3) {
-      background: var(--orange);
-    }
-
-    .mini-shoe {
-      position: absolute;
-      top: 28%;
-      left: 12%;
-      width: 75%;
-      height: 27%;
-      border: 6px solid var(--ink);
-      border-radius: 50% 55% 22% 18%;
-      background: #f6f1e8;
-      transform: rotate(-16deg);
-      box-shadow: 13px 15px 0 var(--ink);
-    }
-
-    .product-card:nth-child(2) .mini-shoe {
-      background: var(--blue);
-    }
-
-    .product-card:nth-child(3) .mini-shoe {
-      background: var(--ink);
-    }
-
-    .product-number {
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-    }
-
-    .product-info {
-      position: absolute;
-      right: 22px;
-      bottom: 22px;
-      left: 22px;
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-    }
-
-    .product-info h3 {
-      font-family: "Archivo Black", sans-serif;
-      font-size: 1.8rem;
-      line-height: 0.95;
-      text-transform: uppercase;
-    }
-
-    .price {
-      font-family: "DM Mono", monospace;
-      font-size: 0.8rem;
-    }
-
-    .customizer {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      padding: 9vw 5vw;
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    .customizer h2 {
-      max-width: 600px;
-      color: var(--acid);
-      letter-spacing: -0.07em;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(3rem, 7vw, 7rem);
-      line-height: 0.88;
-      text-transform: uppercase;
-    }
-
-    .controls {
-      align-self: center;
-    }
-
-    .control-group {
-      margin-bottom: 30px;
-    }
-
-    .control-group label {
-      display: block;
-      margin-bottom: 12px;
-      color: var(--acid);
-      font-family: "DM Mono", monospace;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-    }
-
-    .swatches,
-    .sizes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .swatch,
-    .size {
-      border: 1px solid var(--paper);
-      background: transparent;
-      color: var(--paper);
-    }
-
-    .swatch {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-    }
-
-    .swatch.active,
-    .size.active {
-      outline: 3px solid var(--orange);
-      outline-offset: 3px;
-    }
-
-    .size {
-      min-width: 50px;
-      padding: 12px;
-    }
-
-    .purchase {
-      width: 100%;
-      margin-top: 10px;
-      background: var(--orange);
-      color: var(--ink);
-    }
-
-    footer {
-      display: flex;
-      justify-content: space-between;
-      padding: 24px 5vw;
-      font-family: "DM Mono", monospace;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 800ms ease, transform 800ms ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 850px) {
-      .nav {
-        display: none;
-      }
-
-      .hero,
-      .customizer {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 13vw;
-      }
-
-      .stage {
-        min-height: 410px;
-      }
-
-      .shoe-wrap {
-        width: min(90vw, 570px);
-      }
-
-      .stage::before {
-        width: 90vw;
-        height: 90vw;
-        max-width: 500px;
-        max-height: 500px;
-      }
-
-      .product-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .product-card {
-        min-height: 350px;
-      }
-
-      .section-heading {
-        display: block;
-      }
-
-      .section-heading p {
-        margin-top: 20px;
-      }
-    }
+    * { touch-action: manipulation; box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #080708; color: #e2d9cc; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #webgl-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+    
+    .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; }
+    .brand-header { font-size: 14px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; border-left: 2px solid #8c2323; padding-left: 8px; }
+    
+    /* Native Mobile Bottom Sheet Drawer */
+    .bottom-sheet { 
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      background: rgba(18, 16, 16, 0.92); border: 1px solid #28211d; border-top: 2px solid #8c2323; 
+      border-radius: 16px 16px 0 0; padding: 24px 20px; pointer-events: auto; 
+      transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); 
+      backdrop-filter: blur(10px); z-index: 10;
+    }
+    .bottom-sheet.active { transform: translateY(0); }
+    .bottom-sheet h3 { color: #d4af37; margin: 0 0 8px 0; font-size: 16px; }
+    .bottom-sheet p { font-size: 12px; color: #a69888; margin: 0 0 16px 0; line-height: 1.5; }
+    .btn-buy { background: #8c2323; color: #fff; border: none; width: 100%; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 14px; }
   </style>
 </head>
-
 <body>
-  <header class="site-header">
-    <div class="logo">VANT<span>A</span></div>
+  <canvas id="webgl-canvas"></canvas>
 
-    <nav class="nav">
-      <a href="#shop">Shop</a>
-      <a href="#story">Story</a>
-      <a href="#customize">Customize</a>
-    </nav>
+  <div class="ui-layer">
+    <div class="brand-header">Edo Crafts • 3D Experience</div>
+  </div>
 
-    <button class="cart" aria-label="Shopping cart">
-      Cart <span class="cart-count">0</span>
-    </button>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow">01 / Future footwear system</div>
-
-        <h1>
-          Move<br />
-          <em>different.</em>
-        </h1>
-
-        <p class="hero-description">
-          VANTA-01 is engineered for people who refuse ordinary motion.
-          Sculpted cushioning, zero-gravity comfort, and a silhouette built
-          to be seen from every angle.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button" href="#customize">Build your pair</a>
-          <a class="button secondary" href="#shop">Explore models</a>
-        </div>
-      </div>
-
-      <div class="stage" id="stage">
-        <div class="shoe-wrap" id="shoeWrap">
-          <div class="shoe" id="heroShoe">
-            <div class="laces">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="mark"></div>
-          </div>
-        </div>
-
-        <div class="spec-card">
-          VANTA-01<br />
-          Reactive foam<br />
-          287 grams<br />
-          Drop: 06 mm
-        </div>
-      </div>
-    </section>
-
-    <div class="ticker">
-      <div class="ticker-track">
-        Built for velocity // Designed for impact // Built for velocity //
-        Designed for impact // Built for velocity // Designed for impact //
-      </div>
-    </div>
-
-    <section class="products reveal" id="shop">
-      <div class="section-heading">
-        <h2>Choose<br />your pace.</h2>
-        <p>
-          Three silhouettes. One philosophy: footwear should perform like
-          equipment and look like culture.
-        </p>
-      </div>
-
-      <div class="product-grid">
-        <article class="product-card">
-          <div class="product-number">MODEL 001</div>
-          <div class="mini-shoe"></div>
-          <div class="product-info">
-            <h3>Vanta<br />Core</h3>
-            <div class="price">$180</div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <div class="product-number">MODEL 002</div>
-          <div class="mini-shoe"></div>
-          <div class="product-info">
-            <h3>Vanta<br />Volt</h3>
-            <div class="price">$210</div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <div class="product-number">MODEL 003</div>
-          <div class="mini-shoe"></div>
-          <div class="product-info">
-            <h3>Vanta<br />Night</h3>
-            <div class="price">$195</div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="customizer reveal" id="customize">
-      <div>
-        <div class="eyebrow">02 / Make it yours</div>
-        <h2>Color<br />outside.</h2>
-      </div>
-
-      <div class="controls">
-        <div class="control-group">
-          <label>Choose color</label>
-
-          <div class="swatches">
-            <button
-              class="swatch active"
-              style="background: #d9ff42"
-              data-color="#d9ff42"
-              aria-label="Acid green"
-            ></button>
-
-            <button
-              class="swatch"
-              style="background: #ff6b35"
-              data-color="#ff6b35"
-              aria-label="Orange"
-            ></button>
-
-            <button
-              class="swatch"
-              style="background: #3d5afe"
-              data-color="#3d5afe"
-              aria-label="Blue"
-            ></button>
-
-            <button
-              class="swatch"
-              style="background: #f6f1e8"
-              data-color="#f6f1e8"
-              aria-label="Bone"
-            ></button>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label>Select size</label>
-
-          <div class="sizes">
-            <button class="size" data-size="7">7</button>
-            <button class="size active" data-size="8">8</button>
-            <button class="size" data-size="9">9</button>
-            <button class="size" data-size="10">10</button>
-            <button class="size" data-size="11">11</button>
-          </div>
-        </div>
-
-        <button class="button purchase" id="purchase">
-          Add Vanta-01 to cart
-        </button>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <span>Vanta footwear system</span>
-    <span>Made for the next move</span>
-  </footer>
+  <div id="sheet" class="bottom-sheet">
+    <h3 id="sheet-title">Handmade Artisanal Kimono</h3>
+    <p id="sheet-desc">Woven with traditional Japanese silk patterns and dyed in authentic crimson lacquer indigo tones.</p>
+    <button class="btn-buy" onclick="closeSheet()">Dismiss Drawer</button>
+  </div>
 
   <script>
-    const root = document.documentElement;
-    const shoeWrap = document.querySelector("#shoeWrap");
-    const heroShoe = document.querySelector("#heroShoe");
-    const stage = document.querySelector("#stage");
-    const cartCount = document.querySelector(".cart-count");
-    const purchase = document.querySelector("#purchase");
+    // 1. Mobile WebGL Setup
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x080708, 0.15);
 
-    let cart = 0;
-    let selectedSize = "8";
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 4);
 
-    stage.addEventListener("pointermove", (event) => {
-      const bounds = stage.getBoundingClientRect();
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
-      shoeWrap.style.transform = `
-        translateY(-8px)
-        rotateX(${y * -12}deg)
-        rotateY(${x * 22}deg)
-        rotateZ(${x * 4}deg)
-      `;
+    // 2. Atmospheric Warm Lighting Rig
+    const ambientLight = new THREE.AmbientLight(0xffd5a0, 0.8);
+    scene.add(ambientLight);
+
+    const warmPointLight = new THREE.PointLight(0xff6b35, 2.5, 10);
+    warmPointLight.position.set(-1.5, 1, 2);
+    scene.add(warmPointLight);
+
+    const coolRimLight = new THREE.DirectionalLight(0x4a7c59, 1.2);
+    coolRimLight.position.set(2, 2, -2);
+    scene.add(coolRimLight);
+
+    // 3. Character Anchor Mesh
+    const geo = new THREE.CylinderGeometry(0.5, 0.7, 2, 32);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x8c2323, roughness: 0.3, metalness: 0.1 });
+    const characterMesh = new THREE.Mesh(geo, mat);
+    characterMesh.position.set(0, -0.3, 0);
+    scene.add(characterMesh);
+
+    // 4. Secondary Motion / Spring-Damping Physics State
+    let springPosY = 0, velocityY = 0;
+    const stiffness = 0.08, damping = 0.75;
+
+    // 5. Native Touch Event Handler
+    let startY = 0, touchMoved = false;
+
+    window.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+      touchMoved = false;
     });
 
-    stage.addEventListener("pointerleave", () => {
-      shoeWrap.style.transform = "";
+    window.addEventListener('touchmove', (e) => {
+      const deltaY = e.touches[0].clientY - startY;
+      if (Math.abs(deltaY) > 8) {
+        touchMoved = true;
+        // Inject velocity impulse into physics loop
+        velocityY += deltaY * 0.0012; 
+        characterMesh.rotation.y += deltaY * 0.005;
+        startY = e.touches[0].clientY;
+      }
     });
 
-    document.querySelectorAll(".swatch").forEach((swatch) => {
-      swatch.addEventListener("click", () => {
-        document
-          .querySelectorAll(".swatch")
-          .forEach((item) => item.classList.remove("active"));
-
-        swatch.classList.add("active");
-        root.style.setProperty("--shoe", swatch.dataset.color);
-      });
+    window.addEventListener('touchend', () => {
+      if (!touchMoved) {
+        triggerSheet("Artisanal Crafts Showcase", "Tap and drag on screen to trigger touch physics and rotate character.");
+        velocityY += 0.06; // Tap physics recoil
+      }
     });
 
-    document.querySelectorAll(".size").forEach((size) => {
-      size.addEventListener("click", () => {
-        document
-          .querySelectorAll(".size")
-          .forEach((item) => item.classList.remove("active"));
+    function triggerSheet(title, desc) {
+      document.getElementById('sheet-title').innerText = title;
+      document.getElementById('sheet-desc').innerText = desc;
+      document.getElementById('sheet').classList.add('active');
+    }
 
-        size.classList.add("active");
-        selectedSize = size.dataset.size;
-      });
-    });
+    function closeSheet() {
+      document.getElementById('sheet').classList.remove('active');
+    }
 
-    purchase.addEventListener("click", () => {
-      cart += 1;
-      cartCount.textContent = cart;
-      purchase.textContent = `Added size ${selectedSize}`;
-      purchase.style.background = "#d9ff42";
+    // 6. Smooth 60FPS Physics Render Loop
+    function animate() {
+      requestAnimationFrame(animate);
 
-      setTimeout(() => {
-        purchase.textContent = "Add Vanta-01 to cart";
-        purchase.style.background = "";
-      }, 1800);
-    });
+      // Solve Damped Harmonic Oscillator Equations
+      const forceY = -stiffness * springPosY;
+      velocityY += forceY;
+      velocityY *= damping;
+      springPosY += velocityY;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
+      // Soft-body mesh deformation recoil
+      characterMesh.scale.y = 1 + springPosY * 0.35;
+      characterMesh.scale.x = 1 - springPosY * 0.18;
 
-    document.querySelectorAll(".reveal").forEach((element) => {
-      observer.observe(element);
-    });
+      renderer.render(scene, camera);
+    }
+    animate();
 
-    heroShoe.addEventListener("click", () => {
-      shoeWrap.animate(
-        [
-          { transform: "scale(1) rotateZ(0deg)" },
-          { transform: "scale(1.08) rotateZ(-8deg)" },
-          { transform: "scale(1) rotateZ(0deg)" }
-        ],
-        {
-          duration: 700,
-          easing: "cubic-bezier(.2,.8,.2,1)"
-        }
-      );
+    // 7. Responsive Viewport Orientation Listener
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
   </script>
 </body>
